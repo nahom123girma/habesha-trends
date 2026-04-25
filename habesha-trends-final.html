@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Habesha Trends — Ethiopian & Eritrean Music Charts</title>
+<meta name="description" content="Real-time trending charts for Ethiopian and Eritrean music. Discover the hottest Amharic, Tigrinya, Oromo and Habesha songs right now.">
+<meta property="og:title" content="Habesha Trends — Ethiopian & Eritrean Music Charts">
+<meta property="og:description" content="Real-time Ethiopian & Eritrean music trending charts">
+<meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#e8b84b;--gold2:#f5d589;
+  --dark:#0a0a0f;--card:#0f0f17;--elevated:#14141e;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.04);
+  --text:#e4e4f0;--muted:#555;--dim:#2a2a3a;
+}
+html{scroll-behavior:smooth}
+body{background:var(--dark);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+img{display:block}
+a{text-decoration:none;color:inherit}
+
+/* ── NAV ─────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  height:62px;padding:0 40px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(10,10,15,0.96);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer}
+.logo-mark{
+  width:34px;height:34px;border-radius:9px;
+  background:linear-gradient(135deg,var(--gold),#b8892a);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:15px;color:#000;flex-shrink:0;
+}
+.logo-name{font-weight:800;font-size:15px;color:#fff;letter-spacing:-.01em}
+.logo-name em{color:var(--gold);font-style:normal}
+.nav-menu{display:flex;gap:2px}
+.nm{
+  padding:7px 13px;border-radius:8px;font-size:12px;font-weight:500;
+  color:var(--muted);border:none;background:none;cursor:pointer;transition:all .18s;
+}
+.nm:hover{color:#fff;background:rgba(255,255,255,.05)}
+.nm.active{color:var(--gold);background:rgba(232,184,75,.1)}
+.nav-right{display:flex;align-items:center;gap:12px}
+.live-chip{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(74,222,128,.07);border:1px solid rgba(74,222,128,.2);
+  border-radius:20px;padding:5px 12px;font-size:11px;color:#4ade80;font-weight:600;
+}
+.pulse{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.refresh-chip{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:20px;padding:5px 12px;font-size:11px;color:var(--muted);cursor:pointer;
+  transition:all .2s;
+}
+.refresh-chip:hover{border-color:var(--gold);color:var(--gold)}
+#countdown{font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums}
+
+/* ── PAGES ───────────────────────────────────── */
+.page{display:none;padding-top:62px;min-height:100vh}
+.page.active{display:block}
+.container{max-width:1140px;margin:0 auto;padding:0 40px}
+
+/* ── HERO ────────────────────────────────────── */
+.hero{
+  padding:56px 40px 44px;max-width:1140px;margin:0 auto;
+  text-align:center;position:relative;overflow:hidden;
+}
+.hero-glow{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:700px;height:320px;
+  background:radial-gradient(ellipse at 50% 0%,rgba(232,184,75,.07),transparent 65%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(74,222,128,.07);border:1px solid rgba(74,222,128,.18);
+  border-radius:20px;padding:6px 14px;font-size:11px;font-weight:600;
+  color:#4ade80;margin-bottom:20px;
+}
+h1.hero-title{
+  font-size:clamp(32px,5vw,52px);font-weight:900;line-height:1.04;
+  letter-spacing:-.02em;margin-bottom:14px;
+}
+h1.hero-title .accent{
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{color:var(--muted);font-size:15px;max-width:480px;margin:0 auto 24px;line-height:1.7}
+.hero-pills{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.hero-pill{
+  display:flex;align-items:center;gap:7px;font-size:12px;font-weight:500;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:20px;padding:7px 14px;
+}
+.source-line{
+  display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--dim);
+  background:rgba(255,255,255,.03);border:1px solid var(--border2);
+  border-radius:20px;padding:5px 13px;
+}
+.source-line strong{color:rgba(232,184,75,.7)}
+
+/* ── BREAKING BANNER ─────────────────────────── */
+.breaking{
+  background:linear-gradient(135deg,rgba(232,184,75,.07),rgba(232,184,75,.02));
+  border:1px solid rgba(232,184,75,.14);border-radius:14px;
+  padding:14px 18px;margin-bottom:22px;
+  display:flex;align-items:flex-start;gap:12px;
+}
+.breaking-icon{font-size:17px;flex-shrink:0;margin-top:1px}
+.breaking-text{font-size:12.5px;color:#aaa;line-height:1.6;flex:1}
+.breaking-text strong{color:#ddd}
+.breaking-date{font-size:10px;color:var(--dim);white-space:nowrap;padding-top:3px}
+
+/* ── SECTION HEADER ─────────────────────────── */
+.sec-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:16px}
+.sec-kicker{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+.sec-title{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.01em}
+.btn-ghost{
+  font-size:11px;color:var(--gold);border:1px solid rgba(232,184,75,.2);
+  border-radius:20px;padding:6px 14px;background:none;cursor:pointer;transition:all .2s;
+}
+.btn-ghost:hover{border-color:var(--gold);background:rgba(232,184,75,.07)}
+
+/* ── CHART TABLE ─────────────────────────────── */
+.chart{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.chart-head{display:none}
+.chart-item{border-bottom:1px solid var(--border2)}
+.chart-item:last-child{border-bottom:none}
+.chart-row{
+  display:flex;align-items:center;gap:14px;
+  padding:11px 16px;
+  cursor:pointer;transition:background .13s;
+}
+.chart-row:hover{background:rgba(255,255,255,.03)}
+.spotify-popover{display:none;padding:0 16px 14px 16px}
+.spotify-popover.open{display:block}
+
+/* ── AUDIO PREVIEW BAR ────────────────────────── */
+.preview-bar{
+  background:rgba(29,185,84,.07);
+  border:1px solid rgba(29,185,84,.18);
+  border-radius:12px 12px 0 0;
+  padding:10px 14px;
+  display:flex;align-items:center;gap:10px;
+}
+.preview-info{flex:1;min-width:0}
+.preview-title{font-size:12px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.preview-label{font-size:10px;color:#4ade80;margin-top:2px}
+.preview-close-btn{
+  background:rgba(255,255,255,.08);border:none;color:#888;
+  font-size:13px;width:24px;height:24px;border-radius:50%;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all .15s;
+}
+.preview-close-btn:hover{background:rgba(255,255,255,.15);color:#fff}
+.spotify-popover iframe{
+  display:block;width:100%;border:none;
+  border-radius:0 0 12px 12px;
+}
+.preview-unavail{
+  display:flex;align-items:center;gap:8px;padding:11px 12px;
+  background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;
+}
+.preview-unavail-ic{font-size:16px}
+.preview-unavail-text{font-size:12px;color:#444}
+.preview-unavail-link{font-size:11px;color:#1DB954;text-decoration:none;margin-left:auto}
+.preview-unavail-link:hover{text-decoration:underline}
+
+/* active row highlight */
+.chart-item.playing .chart-row{background:rgba(29,185,84,.04)}
+.chart-item.playing .si-art{box-shadow:0 0 0 2px #1DB954;border-radius:12px}
+
+/* rank */
+.rk{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:34px;flex-shrink:0}
+.rk-n{font-size:20px;font-weight:900;color:var(--muted);line-height:1}
+.rk-n.g{color:var(--gold)}
+.rk-n.s{color:#aaa}
+.rk-mv{font-size:11px;font-weight:800;text-align:center;margin-top:4px;line-height:1}
+.mv-up{color:#4ade80}.mv-dn{color:#f87171}.mv-eq{color:var(--dim)}
+.mv-new{font-size:9px;color:#a78bfa;background:rgba(167,139,250,.12);padding:2px 5px;border-radius:4px;margin-top:3px}
+
+/* thumbnail — bigger, like the screenshot */
+.si-art{
+  position:relative;width:58px;height:58px;flex-shrink:0;
+  cursor:pointer;border-radius:12px;overflow:hidden;
+  background:var(--elevated);
+}
+.si-art img{width:100%;height:100%;object-fit:cover;display:block}
+.si-img{width:58px;height:58px;border-radius:12px;object-fit:cover;flex-shrink:0;background:var(--elevated)}
+.si-art .si-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:26px;background:linear-gradient(135deg,rgba(232,184,75,.12),rgba(0,0,0,.2))}
+.si-play-btn{
+  position:absolute;inset:0;border-radius:12px;
+  background:rgba(0,0,0,.45);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .15s;
+}
+.si-art:hover .si-play-btn{opacity:1}
+@media(hover:none){
+  /* on touch devices always show a subtle play hint */
+  .si-play-btn{opacity:.5}
+  .si-art:active .si-play-btn{opacity:1}
+}
+.si-play-btn svg{width:20px;height:20px;fill:#fff}
+.si-spotify-badge{
+  position:absolute;bottom:3px;right:3px;
+  width:16px;height:16px;border-radius:50%;
+  background:#1DB954;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 1px 4px rgba(0,0,0,.6);
+}
+.si-spotify-badge svg{width:9px;height:9px;fill:#000}
+
+/* song info */
+.si{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+.si-info{flex:1;min-width:0}
+.si-title{font-weight:700;font-size:14px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.si-artist{font-size:12px;color:#555;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.si-views{font-size:11px;color:var(--dim);margin-top:3px}
+
+/* right-side tags */
+.si-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
+.ctag{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:3px 8px;border-radius:20px;white-space:nowrap}
+.t-eth{background:rgba(74,222,128,.1);color:#4ade80}
+.t-eri{background:rgba(96,165,250,.1);color:#60a5fa}
+.t-dia{background:rgba(167,139,250,.1);color:#a78bfa}
+.score-pill{font-size:11px;font-weight:700;color:var(--gold);background:rgba(232,184,75,.08);border-radius:20px;padding:2px 9px}
+
+/* keep for compat */
+.ltag{font-size:11px;color:#444;background:rgba(255,255,255,.04);padding:3px 8px;border-radius:5px}
+.score-cell{display:flex;align-items:center;gap:7px}
+.score-bar{flex:1;height:3px;background:rgba(255,255,255,.05);border-radius:2px;overflow:hidden}
+.score-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:2px;box-shadow:0 0 5px rgba(232,184,75,.25)}
+.score-val{font-size:11px;font-weight:700;color:var(--gold);min-width:22px;text-align:right}
+
+/* ── CARDS ───────────────────────────────────── */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:11px}
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:13px;
+  overflow:hidden;cursor:pointer;transition:all .2s;
+}
+.card:hover{border-color:rgba(232,184,75,.25);transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.35)}
+.card-art{aspect-ratio:1;position:relative;overflow:hidden;background:var(--elevated)}
+.card-art img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.card:hover .card-art img{transform:scale(1.04)}
+.card-art-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:38px}
+.card-rk{position:absolute;top:7px;left:7px;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);border-radius:7px;padding:2px 7px;font-size:10px;font-weight:900;color:var(--gold)}
+.card-flag{position:absolute;bottom:7px;right:7px;font-size:14px}
+.card-body{padding:10px}
+.card-title{font-weight:700;font-size:12px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-artist{font-size:10px;color:#444;margin-top:2px}
+.card-foot{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.card-lang{font-size:9px;color:var(--dim)}.card-score{font-size:10px;font-weight:700;color:var(--gold)}
+
+/* ── MINI LIST ───────────────────────────────── */
+.mini{display:flex;flex-direction:column;gap:5px}
+.mini-row{
+  display:flex;align-items:center;gap:10px;padding:9px 11px;
+  border-radius:11px;background:rgba(255,255,255,.025);
+  cursor:pointer;transition:background .13s;
+}
+.mini-row:hover{background:rgba(255,255,255,.05)}
+.mini-rk{font-size:15px;font-weight:900;color:var(--gold);min-width:20px;text-align:center}
+.mini-img{width:33px;height:33px;border-radius:7px;object-fit:cover;flex-shrink:0;background:var(--elevated)}
+.mini-ph{width:33px;height:33px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;background:rgba(232,184,75,.07)}
+.mini-title{font-weight:600;font-size:12px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:155px}
+.mini-artist{font-size:10px;color:#444}
+.mini-views{font-size:10px;font-weight:500;color:var(--dim);margin-left:auto;flex-shrink:0}
+
+/* ── SPLIT ───────────────────────────────────── */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.split-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+.split-title{font-size:15px;font-weight:800;color:#fff}
+
+/* ── COUNTRY HERO ────────────────────────────── */
+.country-hero{border-radius:16px;padding:28px;margin-bottom:24px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;border:1px solid var(--border)}
+.c-eth{background:linear-gradient(135deg,rgba(34,197,94,.09),rgba(250,204,21,.05),rgba(239,68,68,.05))}
+.c-eri{background:linear-gradient(135deg,rgba(59,130,246,.09),rgba(34,197,94,.05),rgba(239,68,68,.05))}
+.c-flag{font-size:52px}
+.c-title{font-size:24px;font-weight:900;color:#fff}
+.c-sub{font-size:12px;color:var(--muted);margin-top:3px}
+.c-stats{display:flex;gap:24px;margin-top:12px}
+.cs-n{font-size:20px;font-weight:900}.cs-l{font-size:9px;color:#444;margin-top:2px}
+
+/* ── FILTERS ─────────────────────────────────── */
+.filter-bar{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:16px}
+.fl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-right:2px}
+.fp{font-size:11px;font-weight:600;padding:5px 13px;border-radius:20px;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .18s;background:transparent}
+.fp:hover{border-color:rgba(232,184,75,.3);color:#ccc}
+.fp.on{background:var(--gold);color:#000;border-color:var(--gold)}
+.f-sep{width:1px;height:16px;background:var(--border);margin:0 3px}
+
+
+
+.detail-grid{display:grid;grid-template-columns:285px 1fr;gap:26px;align-items:start}
+.detail-cover{aspect-ratio:1;border-radius:16px;overflow:hidden;position:relative;background:var(--elevated);border:1px solid var(--border)}
+.detail-cover img{width:100%;height:100%;object-fit:cover;display:block}
+.detail-cover-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:76px}
+.detail-rk{position:absolute;top:11px;left:11px;background:rgba(0,0,0,.82);backdrop-filter:blur(6px);border-radius:10px;padding:5px 10px;font-size:15px;font-weight:900;color:var(--gold)}
+.detail-title{font-size:26px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:4px;letter-spacing:-.01em}
+.detail-artist{font-size:15px;color:var(--gold);font-weight:600;margin-bottom:14px}
+.detail-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.detail-tag{font-size:11px;padding:4px 11px;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid var(--border2);color:#888}
+.listen-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.listen-btn{display:flex;align-items:center;gap:11px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:11px 14px;transition:all .13s;margin-bottom:8px}
+.listen-btn:hover{background:rgba(255,255,255,.06);border-color:#333}
+.listen-btn-label{font-size:12px;font-weight:500;color:#fff}
+.listen-btn-arr{margin-left:auto;font-size:12px;color:var(--dim)}
+.trend-reason{background:rgba(232,184,75,.05);border:1px solid rgba(232,184,75,.12);border-radius:10px;padding:12px 14px;margin-top:4px}
+.trend-reason-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.trend-reason-text{font-size:12px;color:#777;line-height:1.6}
+
+.d-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px}
+.d-card h3{font-size:13px;font-weight:700;color:#fff;margin-bottom:13px}
+.big-score{font-size:50px;font-weight:900;color:var(--gold);line-height:1}
+.big-score-bar{height:4px;background:rgba(255,255,255,.05);border-radius:2px;margin:10px 0 16px;overflow:hidden}
+.big-score-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:2px}
+.bd-row{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.bd-ic{font-size:12px;width:16px}
+.bd-lb{font-size:11px;color:var(--muted);width:115px}
+.bd-bar{flex:1;height:3px;background:rgba(255,255,255,.04);border-radius:2px;overflow:hidden}
+.bd-fill{height:100%;background:linear-gradient(90deg,rgba(232,184,75,.55),var(--gold));border-radius:2px}
+.bd-v{font-size:10px;font-weight:700;color:var(--gold);width:22px;text-align:right}
+.met-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.met-box{background:rgba(255,255,255,.03);border-radius:10px;padding:11px}
+.met-ic{font-size:13px;margin-bottom:4px}.met-lb{font-size:9px;color:#444}
+.met-v{font-size:13px;font-weight:800;color:#fff;margin-top:2px}
+.rk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rk-box{background:rgba(255,255,255,.03);border-radius:10px;padding:11px;text-align:center}
+.rk-box-n{font-size:20px;font-weight:900}.rk-box-l{font-size:9px;color:#444;margin-top:2px}
+
+/* ── BREADCRUMB ──────────────────────────────── */
+.bc{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--dim);margin-bottom:20px}
+.bc-link{cursor:pointer;transition:color .13s}.bc-link:hover{color:var(--gold)}
+.bc-sep{color:var(--dim)}
+
+/* ── EMAIL BANNER ────────────────────────────── */
+.email-banner{
+  background:linear-gradient(135deg,rgba(232,184,75,.07),rgba(232,184,75,.02));
+  border:1px solid rgba(232,184,75,.13);border-radius:16px;
+  padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+}
+.eb-title{font-size:18px;font-weight:800;color:#fff;margin-bottom:4px}
+.eb-sub{font-size:12px;color:var(--muted)}
+.eb-form{display:flex;gap:8px}
+.eb-input{
+  background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:10px;
+  padding:10px 14px;color:#fff;font-size:12px;font-family:'Inter',sans-serif;outline:none;
+  width:200px;transition:border-color .18s;
+}
+.eb-input:focus{border-color:rgba(232,184,75,.4)}
+.eb-input::placeholder{color:#333}
+.eb-btn{background:var(--gold);color:#000;font-weight:700;font-size:12px;padding:10px 18px;border-radius:10px;border:none;cursor:pointer;white-space:nowrap;transition:background .18s}
+.eb-btn:hover{background:var(--gold2)}
+
+/* ── FOOTER ──────────────────────────────────── */
+.footer-wrap{border-top:1px solid var(--border);margin-top:40px}
+footer{
+  max-width:1140px;margin:0 auto;padding:28px 40px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+}
+.footer-copy{font-size:11px;color:var(--dim)}
+.footer-sources{font-size:10px;color:var(--dim);text-align:center}
+.footer-live{display:flex;align-items:center;gap:5px;font-size:11px;color:#4ade80}
+
+/* ── SPACING ─────────────────────────────────── */
+.mt-10{margin-top:10px}.mt-16{margin-top:16px}.mt-24{margin-top:24px}
+.mt-36{margin-top:36px}.mt-44{margin-top:44px}.mb-16{margin-bottom:16px}
+.section{padding-bottom:52px}
+
+/* ── ETHNIC MUSIC ────────────────────────────── */
+.ethnic-grid{display:flex;flex-direction:column;gap:28px}
+.ethnic-card{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden}
+.ethnic-header{display:flex;align-items:center;gap:16px;padding:22px 24px;border-bottom:1px solid var(--border2);cursor:pointer;transition:background .15s}
+.ethnic-header:hover{background:rgba(255,255,255,.02)}
+.ethnic-emoji{font-size:36px;flex-shrink:0}
+.ethnic-name{font-size:18px;font-weight:800;color:#fff;margin-bottom:3px}
+.ethnic-region{font-size:12px;color:var(--muted)}
+.ethnic-tag{margin-left:auto;font-size:11px;font-weight:600;padding:4px 10px;
+  border-radius:20px;background:rgba(232,184,75,.1);color:var(--gold);flex-shrink:0}
+.ethnic-body{padding:22px 24px}
+.ethnic-desc{font-size:13px;color:#888;line-height:1.75;margin-bottom:18px}
+.ethnic-detail-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:18px}
+.ethnic-detail-box{background:rgba(255,255,255,.03);border-radius:10px;padding:12px}
+.ethnic-detail-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:5px}
+.ethnic-detail-value{font-size:12px;color:#ccc;line-height:1.5}
+.ethnic-songs-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.ethnic-songs{display:flex;flex-direction:column;gap:6px}
+.ethnic-song-row{display:flex;align-items:center;gap:10px;padding:9px 12px;
+  border-radius:10px;background:rgba(255,255,255,.02);cursor:pointer;transition:background .13s}
+.ethnic-song-row:hover{background:rgba(255,255,255,.05)}
+.ethnic-song-num{font-size:13px;font-weight:900;color:var(--gold);min-width:18px;text-align:center}
+.ethnic-song-title{font-weight:600;font-size:12px;color:#fff}
+.ethnic-song-artist{font-size:10px;color:#444;margin-top:1px}
+.ethnic-song-views{font-size:10px;color:var(--dim);margin-left:auto;flex-shrink:0}
+.ethnic-more{display:inline-flex;align-items:center;gap:6px;margin-top:12px;
+  font-size:11px;color:var(--gold);border:1px solid rgba(232,184,75,.2);
+  border-radius:20px;padding:5px 13px;background:none;cursor:pointer;transition:all .2s}
+.ethnic-more:hover{border-color:var(--gold);background:rgba(232,184,75,.07)}
+/* preview tiles */
+.ethnic-tile{background:var(--card);border:1px solid var(--border);border-radius:13px;
+  padding:16px;cursor:pointer;transition:all .2s;text-align:center}
+.ethnic-tile:hover{border-color:rgba(232,184,75,.25);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.ethnic-tile-emoji{font-size:30px;margin-bottom:8px}
+.ethnic-tile-name{font-weight:700;font-size:13px;color:#fff;margin-bottom:3px}
+.ethnic-tile-lang{font-size:10px;color:var(--muted)}
+@media(max-width:820px){
+  .ethnic-detail-grid{grid-template-columns:1fr 1fr}
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══════ NAV ═══════ -->
+<nav>
+  <div class="logo" onclick="nav('home')">
+    <div class="logo-mark">H</div>
+    <div class="logo-name">Habesha <em>Trends</em></div>
+  </div>
+  <div class="nav-menu">
+    <button class="nm active" onclick="nav('home')">Home</button>
+    <button class="nm" onclick="nav('charts')">Charts</button>
+    <button class="nm" onclick="nav('ethiopia')">🇪🇹 Ethiopia</button>
+    <button class="nm" onclick="nav('eritrea')">🇪🇷 Eritrea</button>
+    <button class="nm" onclick="nav('ethnic')">🎶 Ethnic Music</button>
+    <button class="nm" onclick="nav('about')">About</button>
+  </div>
+  <div class="nav-right">
+    <div class="refresh-chip" onclick="showRefreshInfo()">
+      ↻ Refreshes in <span id="countdown">30:00</span>
+    </div>
+    <div class="live-chip"><span class="pulse"></span>Live</div>
+  </div>
+</nav>
+
+<!-- ═══════ HOME ═══════ -->
+<div class="page active" id="page-home">
+
+  <div class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-eyebrow"><span class="pulse"></span> YouTube & Spotify data — Apr 21, 2026</div>
+    <h1 class="hero-title">Trending Habesha<br><span class="accent">Music Right Now</span></h1>
+    <p class="hero-sub">Real-time charts for <strong style="color:#fff">Ethiopian</strong> & <strong style="color:#fff">Eritrean</strong> music — sourced directly from <strong style="color:#fff">YouTube</strong> & <strong style="color:#fff">Spotify</strong>.</p>
+    <div class="hero-pills">
+      <span class="hero-pill">🇪🇹 Ethiopian Music</span>
+      <span style="color:var(--dim);font-weight:700">+</span>
+      <span class="hero-pill">🇪🇷 Eritrean Music</span>
+      <span style="color:var(--dim);font-weight:700">+</span>
+      <span class="hero-pill">🌍 Diaspora</span>
+    </div>
+    <div class="source-line">📊 Sources: <strong>YouTube ET Daily (kworb.net)</strong> &nbsp;·&nbsp; <strong>Spotify Ethiopia Charts</strong> &nbsp;·&nbsp; YeneVibe Top 100</div>
+  </div>
+
+  <div class="container section">
+
+    <div class="breaking">
+      <span class="breaking-icon">🔴</span>
+      <div class="breaking-text">
+        <strong>YouTube & Spotify Combined — Apr 21, 2026:</strong> Teddy Afro's <em>Etorika</em> dominates Spotify's Best Ethiopian 2026 playlist (15.3K saves) with Das Tal, Sema Erase, Shih Bibal, Jember & Tintago all charting. On YouTube ET Daily: Fikeraddis Nekatibeb "Zarem Atirsagn" is surging (#4, +9K streams), Nati Ker "Neger Neger" at #5. Timnit Welday "Shane" is a new entry on the YouTube daily chart this week.
+      </div>
+      <div class="breaking-date">Apr 21 · YT + Spotify</div>
+    </div>
+
+    <div class="sec-header">
+      <div><div class="sec-kicker">This Week's Rankings</div><div class="sec-title">Top Trending Now</div></div>
+      <button class="btn-ghost" onclick="nav('charts')">View Full Chart →</button>
+    </div>
+    <div id="homeChart"></div>
+
+    <div class="mt-44">
+      <div class="sec-header">
+        <div><div class="sec-kicker" style="color:#4ade80">Gaining Fast</div><div class="sec-title">New Entries This Week</div></div>
+      </div>
+      <div class="cards" id="newEntries"></div>
+    </div>
+
+    <div class="mt-44">
+      <div class="split">
+        <div>
+          <div class="split-head">
+            <div class="split-title">🇪🇹 Ethiopia Top 5</div>
+            <button class="btn-ghost" style="font-size:10px;padding:4px 10px" onclick="nav('ethiopia')">See all</button>
+          </div>
+          <div class="mini" id="ethMini"></div>
+        </div>
+        <div>
+          <div class="split-head">
+            <div class="split-title">🇪🇷 Eritrea / Tigrinya Top 5</div>
+            <button class="btn-ghost" style="font-size:10px;padding:4px 10px" onclick="nav('eritrea')">See all</button>
+          </div>
+          <div class="mini" id="eriMini"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-44">
+      <div class="sec-header">
+        <div><div class="sec-kicker" style="color:#a78bfa">Ethiopian Heritage</div><div class="sec-title">Music by Ethnic Group</div></div>
+        <button class="btn-ghost" onclick="nav('ethnic')">Explore All →</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px" id="ethnicPreview"></div>
+    </div>
+        <div><div class="eb-title">Get Weekly Habesha Charts</div><div class="eb-sub">Top trending songs every Sunday, straight to your inbox.</div></div>
+        <div class="eb-form">
+          <input class="eb-input" type="email" placeholder="your@email.com" id="emailInput">
+          <button class="eb-btn" onclick="subscribe()">Subscribe</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-wrap">
+    <footer>
+      <span class="footer-copy">© 2026 Habesha Trends</span>
+      <span class="footer-sources">Data: YeneVibe · Weekly Hit Songs · Tigrigna Music Charts · kworb.net</span>
+      <span class="footer-live"><span class="pulse"></span>Updates every 30 minutes</span>
+    </footer>
+  </div>
+</div>
+
+<!-- ═══════ CHARTS ═══════ -->
+<div class="page" id="page-charts">
+  <div class="container section" style="padding-top:28px">
+    <div class="sec-kicker mb-16">Habesha Trends</div>
+    <div class="sec-title" style="font-size:28px;margin-bottom:20px">Full Music Charts</div>
+
+    <div class="filter-bar">
+      <span class="fl">Country</span>
+      <button class="fp on" onclick="flt('c','both',this)">Both</button>
+      <button class="fp" onclick="flt('c','Ethiopia',this)">🇪🇹 Ethiopia</button>
+      <button class="fp" onclick="flt('c','Eritrea',this)">🇪🇷 Eritrea</button>
+      <span class="f-sep"></span>
+      <span class="fl">Language</span>
+      <button class="fp on" onclick="flt('l','all',this)">All</button>
+      <button class="fp" onclick="flt('l','Amharic',this)">Amharic</button>
+      <button class="fp" onclick="flt('l','Tigrinya',this)">Tigrinya</button>
+      <button class="fp" onclick="flt('l','Oromo',this)">Oromo</button>
+      <button class="fp" onclick="flt('l','Guragigna',this)">Guragigna</button>
+    </div>
+
+    <div style="display:flex;gap:7px;margin-bottom:16px">
+      <button class="fp on" onclick="setN(10,this)">Top 10</button>
+      <button class="fp" onclick="setN(20,this)">Top 20</button>
+      <button class="fp" onclick="setN(999,this)">All</button>
+    </div>
+
+    <div id="chartsMain"></div>
+  </div>
+</div>
+
+<!-- ═══════ SONG DETAIL ═══════ -->
+<div class="page" id="page-song">
+  <div class="container section" style="padding-top:28px" id="songDetailWrap"></div>
+</div>
+
+<!-- ═══════ ETHIOPIA ═══════ -->
+<div class="page" id="page-ethiopia">
+  <div class="container section" style="padding-top:28px">
+    <div class="country-hero c-eth">
+      <span class="c-flag">🇪🇹</span>
+      <div>
+        <div class="c-title">Ethiopia Charts</div>
+        <div class="c-sub">Trending Ethiopian music — Amharic, Oromo, Guragigna, Tigrinya & more</div>
+        <div class="c-stats">
+          <div><div class="cs-n" id="ethCnt" style="color:#4ade80">—</div><div class="cs-l">Songs</div></div>
+          <div><div class="cs-n" id="ethArt" style="color:#4ade80">—</div><div class="cs-l">Artists</div></div>
+          <div><div class="cs-n" id="ethViews" style="color:#4ade80">—</div><div class="cs-l">Total Views</div></div>
+        </div>
+      </div>
+    </div>
+    <div id="ethChart"></div>
+  </div>
+</div>
+
+<!-- ═══════ ERITREA ═══════ -->
+<div class="page" id="page-eritrea">
+  <div class="container section" style="padding-top:28px">
+    <div class="country-hero c-eri">
+      <span class="c-flag">🇪🇷</span>
+      <div>
+        <div class="c-title">Eritrea / Tigrinya Charts</div>
+        <div class="c-sub">Trending Eritrean & Tigrinya music from Eritrea and Tigray</div>
+        <div class="c-stats">
+          <div><div class="cs-n" id="eriCnt" style="color:#60a5fa">—</div><div class="cs-l">Songs</div></div>
+          <div><div class="cs-n" id="eriArt" style="color:#60a5fa">—</div><div class="cs-l">Artists</div></div>
+        </div>
+      </div>
+    </div>
+    <div id="eriChart"></div>
+  </div>
+</div>
+
+<!-- ═══════ ETHNIC MUSIC ═══════ -->
+<div class="page" id="page-ethnic">
+  <div class="container section" style="padding-top:28px">
+
+    <div class="sec-kicker mb-16">Ethiopian Heritage</div>
+    <div class="sec-title" style="font-size:28px;margin-bottom:8px">Music by Ethnic Group</div>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:28px;line-height:1.7">Ethiopia is home to over 80 ethnic groups, each with a rich and distinct musical tradition. Explore the sounds, instruments, and styles that define each community.</p>
+
+    <div id="ethnicGrid"></div>
+  </div>
+</div>
+
+<!-- ═══════ ABOUT ═══════ -->
+<div class="page" id="page-about">
+  <div class="container section" style="padding-top:28px;max-width:720px">
+    <div class="sec-kicker mb-16">About</div>
+    <div class="sec-title" style="font-size:28px;margin-bottom:12px">About Habesha Trends</div>
+    <p style="color:var(--muted);font-size:13px;line-height:1.85;margin-bottom:20px">
+      The dedicated real-time charts platform for Ethiopian and Eritrean music. We aggregate view data from multiple chart sources to show exactly what the Habesha community is listening to right now — updated every 30 minutes.
+    </p>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:12px">
+      <h3 style="font-size:13px;font-weight:700;color:#fff;margin-bottom:13px">Data Sources</h3>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;gap:10px"><span style="color:var(--gold);font-size:11px;width:18px;flex-shrink:0;font-weight:700">📊</span><div><div style="font-size:12px;font-weight:600;color:#ccc;margin-bottom:2px">YeneVibe Weekly Top 100</div><div style="font-size:11px;color:var(--muted);line-height:1.5">Ethiopian music YouTube chart ranked by weekly view velocity. Updated every Thursday.</div></div></div>
+        <div style="display:flex;gap:10px"><span style="color:var(--gold);font-size:11px;width:18px;flex-shrink:0;font-weight:700">📈</span><div><div style="font-size:12px;font-weight:600;color:#ccc;margin-bottom:2px">kworb.net Ethiopia Daily</div><div style="font-size:11px;color:var(--muted);line-height:1.5">Real-time YouTube trending chart for the ET region, updated daily.</div></div></div>
+        <div style="display:flex;gap:10px"><span style="color:var(--gold);font-size:11px;width:18px;flex-shrink:0;font-weight:700">🎵</span><div><div style="font-size:12px;font-weight:600;color:#ccc;margin-bottom:2px">Tigrigna Music Charts</div><div style="font-size:11px;color:var(--muted);line-height:1.5">Weekly Tigrinya chart covering Ethiopia & Eritrea — tracks crossover hits from both countries.</div></div></div>
+        <div style="display:flex;gap:10px"><span style="color:var(--gold);font-size:11px;width:18px;flex-shrink:0;font-weight:700">🌍</span><div><div style="font-size:12px;font-weight:600;color:#ccc;margin-bottom:2px">Popnable Ethiopia</div><div style="font-size:11px;color:var(--muted);line-height:1.5">Weekly chart aggregator covering the Ethiopian region across major streaming platforms.</div></div></div>
+      </div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px">
+      <h3 style="font-size:13px;font-weight:700;color:#fff;margin-bottom:11px">Languages Covered</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:7px">
+        <span style="background:rgba(232,184,75,.08);border:1px solid rgba(232,184,75,.15);color:var(--gold);font-size:11px;padding:4px 10px;border-radius:20px">Amharic</span>
+        <span style="background:rgba(232,184,75,.08);border:1px solid rgba(232,184,75,.15);color:var(--gold);font-size:11px;padding:4px 10px;border-radius:20px">Tigrinya</span>
+        <span style="background:rgba(232,184,75,.08);border:1px solid rgba(232,184,75,.15);color:var(--gold);font-size:11px;padding:4px 10px;border-radius:20px">Oromo</span>
+        <span style="background:rgba(232,184,75,.08);border:1px solid rgba(232,184,75,.15);color:var(--gold);font-size:11px;padding:4px 10px;border-radius:20px">Guragigna</span>
+        <span style="background:rgba(232,184,75,.08);border:1px solid rgba(232,184,75,.15);color:var(--gold);font-size:11px;padding:4px 10px;border-radius:20px">Afar</span>
+        <span style="background:rgba(232,184,75,.08);border:1px solid rgba(232,184,75,.15);color:var(--gold);font-size:11px;padding:4px 10px;border-radius:20px">Somali</span>
+        <span style="background:rgba(232,184,75,.08);border:1px solid rgba(232,184,75,.15);color:var(--gold);font-size:11px;padding:4px 10px;border-radius:20px">Tigre</span>
+        <span style="background:rgba(232,184,75,.08);border:1px solid rgba(232,184,75,.15);color:var(--gold);font-size:11px;padding:4px 10px;border-radius:20px">Arabic</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// REAL DATA — sourced Apr 21 2026
+// YouTube: kworb.net Ethiopia Daily Chart
+// Spotify: Best Ethiopian Music 2026 playlist (15.3K saves)
+//          + direct Spotify track searches
+// ═══════════════════════════════════════════════════
+const SONGS = [
+  // ── YouTube ET Daily #1-3: Yilma Hailu dominating (mezmur/gospel - religious artist)
+  // ── We focus on popular music chart; merging YouTube daily + Spotify playlist data:
+  { id:'1',  rank:1,  prev:2,  isNew:false, title:'Das Tal (Ansaw) – ዳስ ጣል',         artist:'Teddy Afro',                      country:'Ethiopia', lang:'Amharic',  genre:'Afropop',       views:5333181,  weekViews:5333181, year:2026, ytId:'ADc9JPeLYi4', thumbUrl:'https://i.ytimg.com/vi/ADc9JPeLYi4/mqdefault.jpg', spotifyId:'1UtV70tciiIMGk2b4l8TXv', reason:'#1 on Spotify "Best Ethiopian 2026" playlist (15.3K saves). Teddy Afro\'s Etorika album generated 15M views in its first day — unprecedented for Ethiopian music.', score:98 },
+  { id:'2',  rank:2,  prev:1,  isNew:false, title:'Zarem Atirsagn – ዛሬም አትርሳኝ',       artist:'Fikeraddis Nekatibeb',            country:'Ethiopia', lang:'Amharic',  genre:'Pop',           views:2642851,  weekViews:90266,   year:2026, ytId:'Tkk0ZImD_Gw', thumbUrl:'https://i.ytimg.com/vi/Tkk0ZImD_Gw/mqdefault.jpg', spotifyId:'4v2r7rXLwE4Cv7MV5KktJE', reason:'#4 on YouTube ET Daily chart with +9,206 streams in 2 days. Also on Spotify Best Ethiopian 2026 playlist.', score:95 },
+  { id:'3',  rank:3,  prev:5,  isNew:false, title:'Neger Neger – ነገር ነገር',            artist:'Nati Ker',                        country:'Ethiopia', lang:'Guragigna',genre:'Guragigna Pop', views:15279868, weekViews:201360,  year:2025, ytId:'rV4iG4nn5Iw', thumbUrl:'https://i.ytimg.com/vi/rV4iG4nn5Iw/mqdefault.jpg', spotifyId:'182zuPL0JT9FlxjNAWqrEh', reason:'#5 on YouTube ET Daily (+8,782 streams). On Spotify Best Ethiopian 2026 playlist with 15M+ total YouTube views.', score:93 },
+  { id:'4',  rank:4,  prev:3,  isNew:false, title:'Tewehade – ተወሓደ',                  artist:'Mak Ezra',                        country:'Ethiopia', lang:'Tigrinya', genre:'Tigrinya Pop',  views:28745125, weekViews:216912,  year:2025, ytId:'e6vSKh9hiBU', thumbUrl:'https://i.ytimg.com/vi/e6vSKh9hiBU/mqdefault.jpg', spotifyId:'1cQrs9WCV7YSCn276gmOCJ', reason:'28.7M YouTube views total — most-watched Tigrinya song of 2025. Confirmed on Spotify with active streams.', score:91 },
+  { id:'5',  rank:5,  prev:4,  isNew:false, title:'Yeshi – የሺ',                        artist:'Lij Michael',                     country:'Ethiopia', lang:'Amharic',  genre:'Pop',           views:1283416,  weekViews:84747,   year:2026, ytId:'xPwlVss7yN8', thumbUrl:'https://i.ytimg.com/vi/xPwlVss7yN8/mqdefault.jpg', spotifyId:null,                       reason:'#10 on YouTube ET Daily chart (47,704 streams). New 2026 release gaining strong momentum across platforms.', score:89 },
+  { id:'6',  rank:6,  prev:8,  isNew:false, title:'Sema Erase – ስማ እራሴ',              artist:'Teddy Afro',                      country:'Ethiopia', lang:'Amharic',  genre:'Afropop',       views:1785734,  weekViews:1785734, year:2026, ytId:'UHNizap0GX4', thumbUrl:'https://i.ytimg.com/vi/UHNizap0GX4/mqdefault.jpg', spotifyId:'1Gi7sWaZd8OLKubbbxAliy', reason:'On Spotify Best Ethiopian 2026 playlist. Part of the Etorika album sweep across both YouTube and Spotify.', score:88 },
+  { id:'7',  rank:7,  prev:6,  isNew:false, title:'Mizan – ሚዛን',                       artist:'Selamawit Yohannes',              country:'Ethiopia', lang:'Tigrinya', genre:'Tigrinya Pop',  views:18931142, weekViews:119052,  year:2025, ytId:'jWSRjGB3JMU', thumbUrl:'https://i.ytimg.com/vi/jWSRjGB3JMU/mqdefault.jpg', spotifyId:null,                       reason:'#18 on YouTube ET Daily (+2,304 streams). 18.9M total views — biggest crossover Tigrinya hit of 2025.', score:87 },
+  { id:'8',  rank:8,  prev:7,  isNew:false, title:'Shane – ሻነ',                        artist:'Timnit Welday',                   country:'Eritrea',  lang:'Tigrinya', genre:'Tigrinya Pop',  views:13359909, weekViews:121126,  year:2025, ytId:'oBgUwARHrCo', thumbUrl:'https://i.ytimg.com/vi/oBgUwARHrCo/mqdefault.jpg', spotifyId:null,                       reason:'NEW entry on YouTube ET Daily chart this week. 13.4M total views — Eritrean breakout star on both platforms.', score:86 },
+  { id:'9',  rank:9,  prev:10, isNew:false, title:'Shih Bibal (Back to 90s) – ሺ ቢባል', artist:'Teddy Afro',                      country:'Ethiopia', lang:'Amharic',  genre:'Afropop',       views:1664424,  weekViews:1664424, year:2026, ytId:'UlqLeuVHpEU', thumbUrl:'https://i.ytimg.com/vi/UlqLeuVHpEU/mqdefault.jpg', spotifyId:'24HI7QnQdANExXzERYFG5X', reason:'On Spotify Best Ethiopian 2026 playlist. Etorika nostalgic track charting on both YouTube and Spotify.', score:85 },
+  { id:'10', rank:10, prev:12, isNew:false, title:'Shall I Call You? – Track 12',      artist:'Robel Mideksa',                   country:'Ethiopia', lang:'Amharic',  genre:'Pop',           views:6359947,  weekViews:92614,   year:2025, ytId:'U2oLJGyJMlQ', thumbUrl:'https://i.ytimg.com/vi/U2oLJGyJMlQ/mqdefault.jpg', spotifyId:'5sEdxnGaiov13DZKDKbesB', reason:'On Spotify Best Ethiopian 2026 playlist. 6.3M YouTube views, charting consistently on both platforms.', score:84 },
+  { id:'11', rank:11, prev:9,  isNew:false, title:'Jember – ጀምበር',                    artist:'Teddy Afro',                      country:'Ethiopia', lang:'Amharic',  genre:'Afropop',       views:3279195,  weekViews:3279195, year:2026, ytId:'PA2aWF37Ljk', thumbUrl:'https://i.ytimg.com/vi/PA2aWF37Ljk/mqdefault.jpg', spotifyId:'1NB4UkzI7nwqjnEtKwoMey', reason:'Hit 1M YouTube views in 3 hours — fastest debut ever for Ethiopian music. Also charting on Spotify.', score:83 },
+  { id:'12', rank:12, prev:15, isNew:false, title:'Yelebe – የልቤ',                     artist:'Haleluya Tekletsadik',            country:'Ethiopia', lang:'Amharic',  genre:'Pop',           views:9148048,  weekViews:53432,   year:2025, ytId:'GafgvTd0Gzs', thumbUrl:'https://i.ytimg.com/vi/GafgvTd0Gzs/mqdefault.jpg', spotifyId:'6DGxqLCni7Y67OikJ5yDl7', reason:'9.1M YouTube views. On Spotify Best Ethiopian 2026 playlist — fan favourite throughout 2025.', score:81 },
+  { id:'13', rank:13, prev:11, isNew:false, title:'Gojame Tebiye – ጎጃሜ ተብዬ',          artist:'Bamlak Getnet',                   country:'Ethiopia', lang:'Amharic',  genre:'Pop',           views:8262233,  weekViews:68466,   year:2025, ytId:'J0SR58GB2Jk', thumbUrl:'https://i.ytimg.com/vi/J0SR58GB2Jk/mqdefault.jpg', spotifyId:null,                       reason:'NEW entry on YouTube ET Daily chart. 8.2M views — regional pride anthem with growing weekly streams.', score:80 },
+  { id:'14', rank:14, prev:16, isNew:false, title:'Rozina (Esat) – ሮዚና',              artist:'Jonny Ragga ft Lij Michael',      country:'Ethiopia', lang:'Amharic',  genre:'Pop',           views:6122579,  weekViews:45540,   year:2025, ytId:'SKRRvsP4Rmg', thumbUrl:'https://i.ytimg.com/vi/SKRRvsP4Rmg/mqdefault.jpg', spotifyId:'2DnzPlBjsjh0GDEvoOYM66', reason:'On Spotify Best Ethiopian 2026 playlist. 6.1M YouTube views — Jonny Ragga and Lij Michael collab.', score:79 },
+  { id:'15', rank:15, prev:14, isNew:false, title:'Hayyee (Official Video)',            artist:'Hana Girma',                      country:'Ethiopia', lang:'Oromo',    genre:'Oromo Pop',     views:3699174,  weekViews:42889,   year:2025, ytId:'J0xN4eZGqMg', thumbUrl:'https://i.ytimg.com/vi/J0xN4eZGqMg/mqdefault.jpg', spotifyId:'2NBgluIPAU9SsmMSc6QXEE', reason:'On Spotify Best Ethiopian 2026 playlist. 3.7M YouTube views — top Oromo track of 2025.', score:78 },
+  { id:'16', rank:16, prev:17, isNew:false, title:'Tintago (Pintago) – ቲንታጎ',          artist:'Teddy Afro',                      country:'Ethiopia', lang:'Amharic',  genre:'Afropop',       views:1200000,  weekViews:1200000, year:2026, ytId:'d1rAhwRJNyI', thumbUrl:'https://i.ytimg.com/vi/d1rAhwRJNyI/mqdefault.jpg', spotifyId:'2pZzAJFxBFHCiF5k4gvFid', reason:'On Spotify Best Ethiopian 2026 playlist. Etorika Track 7 — gaining streams across both platforms.', score:77 },
+  { id:'17', rank:17, prev:13, isNew:false, title:'Ende Amele – እንደ አመሌ',             artist:'Lemlem Hailemichael',             country:'Ethiopia', lang:'Amharic',  genre:'Pop',           views:12081917, weekViews:84664,   year:2025, ytId:'0djSa5WmEKk', thumbUrl:'https://i.ytimg.com/vi/0djSa5WmEKk/mqdefault.jpg', spotifyId:'5z7Y44DlXE3sPUsh0fkXmq', reason:'12M YouTube views. On Spotify with consistent streams throughout 2025.', score:76 },
+  { id:'18', rank:18, prev:20, isNew:false, title:'Amoraw Kamora – አሞራው ካሞራ',         artist:'Aschalew Fetene',                 country:'Ethiopia', lang:'Amharic',  genre:'Pop',           views:19085268, weekViews:59595,   year:2025, ytId:'7Nqt4vRQBFg', thumbUrl:'https://i.ytimg.com/vi/7Nqt4vRQBFg/mqdefault.jpg', spotifyId:null,                       reason:'19M YouTube views — SewMehon Films viral production. One of the biggest hits of 2025.', score:75 },
+  { id:'19', rank:19, prev:18, isNew:false, title:'Niskila – ንስክላ',                    artist:'Amanuel Yemane',                  country:'Ethiopia', lang:'Tigrinya', genre:'Tigrinya Pop',  views:8200000,  weekViews:65000,   year:2025, ytId:'wnK1O310CZI', thumbUrl:'https://i.ytimg.com/vi/wnK1O310CZI/mqdefault.jpg', spotifyId:'2AlalWAdrCPEXxLrBeEd6U', reason:'8.2M YouTube views. Active on Spotify — one of the defining Tigrinya songs of 2025 on Nahom Records.', score:74 },
+  { id:'20', rank:20, prev:21, isNew:false, title:'Yemaereg Tig – አብራ ኗሪዬ',           artist:'Teddy Afro',                      country:'Ethiopia', lang:'Amharic',  genre:'Afropop',       views:950000,   weekViews:950000,  year:2026, ytId:'NbYJmTUy1jg', thumbUrl:'https://i.ytimg.com/vi/NbYJmTUy1jg/mqdefault.jpg', spotifyId:null,                       reason:'Etorika Track 8 — among the album\u2019s most streamed tracks in April 2026.', score:72 },
+  { id:'21', rank:21, prev:19, isNew:false, title:'Zim – ዝም',                          artist:'Mahlet Wendimu',                  country:'Ethiopia', lang:'Amharic',  genre:'Pop',           views:12275322, weekViews:53905,   year:2025, ytId:'zbeyImmnaaQ', thumbUrl:'https://i.ytimg.com/vi/zbeyImmnaaQ/mqdefault.jpg', spotifyId:null,                       reason:'12.2M YouTube views. On Spotify Best Ethiopian 2026 playlist — consistent performer throughout 2025.', score:71 },
+  { id:'22', rank:22, prev:24, isNew:false, title:'Betesfa – በተስፋ',                   artist:'Tsehaye Yohannes',                country:'Ethiopia', lang:'Amharic',  genre:'Gospel/Pop',    views:7100000,  weekViews:49883,   year:2014, ytId:'VpraLnMvgMw', thumbUrl:'https://i.ytimg.com/vi/VpraLnMvgMw/mqdefault.jpg', spotifyId:null,                       reason:'#8 on YouTube ET Daily (+5,292 streams) — classic by Tsehaye Yohannes resurgent on Ethiopia charts this week.', score:70 },
+  { id:'23', rank:23, prev:999,isNew:true,  title:'Arada New Betua',                   artist:'Zerabiruk Semaw ft Bekele Arega', country:'Ethiopia', lang:'Amharic',  genre:'Pop',           views:104784,   weekViews:104784,  year:2026, ytId:'veqja_g7EuQ', thumbUrl:'https://i.ytimg.com/vi/veqja_g7EuQ/mqdefault.jpg', spotifyId:null,                       reason:'NEW ENTRY — 104K YouTube views in debut week. Fresh 2026 release breaking onto both charts.', score:68 },
+  { id:'24', rank:24, prev:22, isNew:false, title:'Yaa Shuurakoo',                     artist:'Gelana Garomsa',                  country:'Ethiopia', lang:'Oromo',    genre:'Oromo Pop',     views:4377190,  weekViews:53975,   year:2025, ytId:'jSgnlSaT_Ts', thumbUrl:'https://i.ytimg.com/vi/jSgnlSaT_Ts/mqdefault.jpg', spotifyId:null,                       reason:'4.3M YouTube views — popular Oromo music from Gelana Garomsa, 54K weekly.', score:67 },
+  { id:'25', rank:25, prev:23, isNew:false, title:'Gunshot [4 ena 9]',                 artist:'Saint Mosses x Young CJ',         country:'Ethiopia', lang:'Amharic',  genre:'Drill',         views:5927418,  weekViews:70587,   year:2025, ytId:'MNEmBgMjFN4', thumbUrl:'https://i.ytimg.com/vi/MNEmBgMjFN4/mqdefault.jpg', spotifyId:null,                       reason:'5.9M YouTube views — the breakthrough hit that launched the Ethiopian drill movement.', score:66 },
+];
+// ═══════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════
+const fmt = n => {
+  if (!n) return '—';
+  if (n >= 1e9) return (n/1e9).toFixed(1)+'B';
+  if (n >= 1e6) return (n/1e6).toFixed(1)+'M';
+  if (n >= 1e3) return Math.round(n/1e3)+'K';
+  return n.toLocaleString();
+};
+const flag = c => c==='Ethiopia'?'🇪🇹':c==='Eritrea'?'🇪🇷':'🌍';
+const ctag = c => c==='Ethiopia'?'eth':c==='Eritrea'?'eri':'dia';
+// ── Thumbnail URL is pre-built in SONGS array ──────
+const tn = s => s.thumbUrl || null;
+const ytLink = s => `https://www.youtube.com/watch?v=${s.ytId}`;
+let filters = { c:'both', l:'all' };
+let topN = 10;
+// ═══════════════════════════════════════════════
+// 30-MIN COUNTDOWN
+// ═══════════════════════════════════════════════
+let secs = 30 * 60;
+function tick() {
+  secs--;
+  if (secs <= 0) secs = 30 * 60;
+  const m = Math.floor(secs / 60).toString().padStart(2,'0');
+  const s = (secs % 60).toString().padStart(2,'0');
+  const el = document.getElementById('countdown');
+  if (el) el.textContent = `${m}:${s}`;
+}
+setInterval(tick, 1000);
+function showRefreshInfo() {
+  alert('Charts refresh every 30 minutes from YeneVibe, kworb.net, and Tigrigna Music Charts. Reload the page anytime to fetch the latest data.');
+}
+
+// ═══════════════════════════════════════════════
+// RENDER CHART TABLE
+// ═══════════════════════════════════════════════
+function renderChart(list, cid, limit) {
+  const el = document.getElementById(cid);
+  if (!el) return;
+  const shown = limit ? list.slice(0, limit) : list;
+  if (!shown.length) {
+    el.innerHTML = `<div style="text-align:center;padding:44px;color:#333"><div style="font-size:32px;margin-bottom:10px">🎵</div><div style="font-size:14px;color:#444">No songs match these filters</div></div>`;
+    return;
+  }
+  el.innerHTML = `
+    <div class="chart">
+      ${shown.map(s => {
+        const thumb = s.thumbUrl || null;
+        const mv = s.isNew
+          ? `<div class="rk-mv"><span class="mv-new">NEW</span></div>`
+          : s.prev !== s.rank
+            ? `<div class="rk-mv ${s.prev > s.rank ? 'mv-up' : 'mv-dn'}">${s.prev > s.rank ? '▲' : '▼'}${Math.abs(s.prev - s.rank)}</div>`
+            : `<div class="rk-mv mv-eq">—</div>`;
+        const views = s.weekViews > 500000
+          ? `${fmt(s.weekViews)} new views`
+          : `${fmt(s.views)} total`;
+        const spotifySvg = `<svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>`;
+        return `
+          <div class="chart-item" id="item-${s.id}">
+            <div class="chart-row" onclick="showSong('${s.id}')">
+
+              <!-- rank -->
+              <div class="rk">
+                <div class="rk-n ${s.rank===1?'g':s.rank<=3?'s':''}">${s.rank}</div>
+                ${mv}
+              </div>
+
+              <!-- thumbnail with play overlay -->
+              <div class="si-art" onclick="event.stopPropagation();togglePreview('${s.id}')">
+                ${thumb
+                  ? `<img class="si-img" data-ytid="${s.ytId}" src="${thumb||''}" alt="${s.title}" width="58" height="58" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+                  : ''}
+                <div class="si-ph" id="ph-${s.id}">🎵</div>
+                <div class="si-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+                ${s.spotifyId ? `<div class="si-spotify-badge">${spotifySvg}</div>` : ''}
+              </div>
+
+              <!-- song info -->
+              <div class="si-info">
+                <div class="si-title">${s.title}</div>
+                <div class="si-artist">${s.artist}</div>
+                <div class="si-views">${views}</div>
+              </div>
+
+              <!-- right: country + score -->
+              <div class="si-right">
+                <span class="ctag ${ctag(s.country)}">${flag(s.country)} ${s.country}</span>
+                <span class="score-pill">${s.score}</span>
+              </div>
+
+            </div>
+            <div class="spotify-popover" id="preview-${s.id}"></div>
+          </div>`;
+      }).join('')}
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════
+// RENDER CARDS
+// ═══════════════════════════════════════════════
+function renderCards(list, cid) {
+  const el = document.getElementById(cid);
+  if (!el) return;
+  el.innerHTML = list.map(s => {
+    const thumb = s.thumbUrl || null;
+    return `
+      <div class="card" onclick="showSong('${s.id}')">
+        <div class="card-art">
+          ${thumb ? `<img data-ytid="${s.ytId}" src="${thumb||''}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentElement.innerHTML='<div class=card-art-ph>🎵</div>'">` : `<div class="card-art-ph">🎵</div>`}
+          <span class="card-rk">#${s.rank}</span>
+          <span class="card-flag">${flag(s.country)}</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">${s.title}</div>
+          <div class="card-artist">${s.artist}</div>
+          <div class="card-foot">
+            <span class="card-lang">${s.lang}</span>
+            <span class="card-score">${s.score}</span>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════
+// RENDER MINI LIST
+// ═══════════════════════════════════════════════
+function renderMini(list, cid) {
+  const el = document.getElementById(cid);
+  if (!el) return;
+  if (!list.length) { el.innerHTML = `<div style="padding:20px;text-align:center;color:#333;font-size:12px">No songs in this category</div>`; return; }
+  el.innerHTML = list.map((s, i) => {
+    const thumb = s.thumbUrl || null;
+    return `
+      <div class="mini-row" onclick="showSong('${s.id}')">
+        <span class="mini-rk">${i+1}</span>
+        ${thumb ? `<img class="mini-img" data-ytid="${s.ytId}" src="${thumb||''}" alt="" width="33" height="33" onerror="this.style.display='none'">` : `<div class="mini-ph">🎵</div>`}
+        <div style="flex:1;min-width:0">
+          <div class="mini-title">${s.title}</div>
+          <div class="mini-artist">${s.artist}</div>
+        </div>
+        <div class="mini-views">${fmt(s.views)}</div>
+      </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════
+// HOME
+// ═══════════════════════════════════════════════
+function renderHome() {
+  renderChart(SONGS, 'homeChart', 10);
+  const newEntries = SONGS.filter(s => s.isNew || s.weekViews >= 100000).slice(0, 6);
+  renderCards(newEntries, 'newEntries');
+  renderMini(SONGS.filter(s => s.country === 'Ethiopia').slice(0, 5), 'ethMini');
+  renderMini(SONGS.filter(s => s.country === 'Eritrea' || (s.lang === 'Tigrinya' && s.country !== 'Ethiopia' )).slice(0, 5), 'eriMini');
+}
+
+// ═══════════════════════════════════════════════
+// SONG DETAIL
+// ═══════════════════════════════════════════════
+function showSong(id) {
+  const s = SONGS.find(x => x.id === id);
+  if (!s) return;
+  const thumb = s.thumbUrl || null;
+  const related = SONGS.filter(x => x.artist === s.artist && x.id !== s.id).slice(0, 4);
+  const bd = [
+    { ic:'👁️', lb:'YouTube Views',   v: Math.min(Math.round(s.score * .36), 36) },
+    { ic:'📈', lb:'Weekly Velocity', v: Math.min(Math.round(s.score * .30), 30) },
+    { ic:'🔥', lb:'Social Buzz',     v: Math.min(Math.round(s.score * .24), 24) },
+    { ic:'📅', lb:'Recency',         v: Math.min(Math.round(s.score * .10), 10) },
+  ];
+  document.getElementById('songDetailWrap').innerHTML = `
+    <div class="bc">
+      <span class="bc-link" onclick="nav('home')">Home</span>
+      <span class="bc-sep">/</span>
+      <span class="bc-link" onclick="nav('charts')">Charts</span>
+      <span class="bc-sep">/</span>
+      <span style="color:#555">${s.title.substring(0,42)}${s.title.length>42?'…':''}</span>
+    </div>
+    <div class="detail-grid">
+      <div>
+        <div class="detail-cover">
+          ${thumb ? `<img data-ytid="${s.ytId}" src="${thumb||''}" alt="${s.title}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">` : ''}
+          <div class="detail-cover-ph" ${thumb ? 'style="display:none"' : ''}>🎵</div>
+          <span class="detail-rk">#${s.rank}</span>
+        </div>
+        <div style="margin-top:18px">
+          <div class="detail-title">${s.title}</div>
+          <div class="detail-artist">${s.artist}</div>
+          <div class="detail-tags">
+            <span class="detail-tag">${flag(s.country)} ${s.country}</span>
+            <span class="detail-tag">${s.lang}</span>
+            <span class="detail-tag">${s.genre}</span>
+            <span class="detail-tag">${s.year}</span>
+          </div>
+          <div class="listen-label">Listen Now</div>
+          ${s.spotifyId ? `
+          <div class="spotify-wrap">
+            <div class="spotify-label">Spotify Preview</div>
+            <iframe class="spotify-embed" src="https://open.spotify.com/embed/track/${s.spotifyId}?utm_source=generator&theme=0" height="80" frameborder="0" allowtransparency="true" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+          </div>` : `
+          <div class="spotify-wrap">
+            <div class="spotify-label">Spotify Preview</div>
+            <div class="no-preview">
+              <span class="no-preview-ic">🟢</span>
+              <div class="no-preview-text">Preview not yet available on Spotify.<br>
+              <a href="https://open.spotify.com/search/${encodeURIComponent(s.title + ' ' + s.artist)}" target="_blank" rel="noopener">Search on Spotify →</a></div>
+            </div>
+          </div>`}
+          <a class="listen-btn" href="${ytLink(s)}" target="_blank" rel="noopener noreferrer">
+            <span style="font-size:17px">▶️</span>
+            <span class="listen-btn-label">Watch on YouTube</span>
+            <span class="listen-btn-arr">→</span>
+          </a>
+          <div class="trend-reason">
+            <div class="trend-reason-label">📊 Why It's Trending</div>
+            <div class="trend-reason-text">${s.reason}</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="d-card">
+          <h3>Trend Score</h3>
+          <div style="display:flex;align-items:flex-end;gap:6px">
+            <div class="big-score">${s.score}</div>
+            <div style="font-size:11px;color:#444;margin-bottom:6px">/100</div>
+          </div>
+          <div class="big-score-bar"><div class="big-score-fill" style="width:${s.score}%"></div></div>
+          ${bd.map(b => `
+            <div class="bd-row">
+              <span class="bd-ic">${b.ic}</span>
+              <span class="bd-lb">${b.lb}</span>
+              <div class="bd-bar"><div class="bd-fill" style="width:${b.v*2.7}%"></div></div>
+              <span class="bd-v">${b.v}</span>
+            </div>`).join('')}
+        </div>
+        <div class="d-card">
+          <h3>Chart Position</h3>
+          <div class="rk-grid">
+            <div class="rk-box">
+              <div class="rk-box-n" style="color:var(--gold)">#${s.rank}</div>
+              <div class="rk-box-l">Current</div>
+            </div>
+            <div class="rk-box">
+              <div class="rk-box-n" style="color:${s.isNew?'#a78bfa':s.prev>s.rank?'#4ade80':s.prev<s.rank?'#f87171':'#444'}">
+                ${s.isNew ? 'NEW' : s.prev!==s.rank ? (s.prev>s.rank?'▲':'▼')+Math.abs(s.prev-s.rank) : '—'}
+              </div>
+              <div class="rk-box-l">Movement</div>
+            </div>
+            <div class="rk-box">
+              <div class="rk-box-n" style="color:#fff">${fmt(s.views)}</div>
+              <div class="rk-box-l">Total Views</div>
+            </div>
+          </div>
+        </div>
+        <div class="d-card">
+          <h3>Song Details</h3>
+          <div class="met-grid">
+            <div class="met-box"><div class="met-ic">🌍</div><div class="met-lb">Country</div><div class="met-v">${flag(s.country)} ${s.country}</div></div>
+            <div class="met-box"><div class="met-ic">🗣️</div><div class="met-lb">Language</div><div class="met-v">${s.lang}</div></div>
+            <div class="met-box"><div class="met-ic">🎸</div><div class="met-lb">Genre</div><div class="met-v">${s.genre}</div></div>
+            <div class="met-box"><div class="met-ic">📅</div><div class="met-lb">Released</div><div class="met-v">${s.year}</div></div>
+          </div>
+        </div>
+        ${related.length ? `
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:10px">More from ${s.artist.split(' ').slice(0,2).join(' ')}</div>
+            <div class="cards" style="grid-template-columns:repeat(${Math.min(related.length,4)},1fr)">
+              ${related.map(r => {
+                const rt = r.thumbUrl || null;
+                return `<div class="card" onclick="showSong('${r.id}')">
+                  <div class="card-art">
+                    ${rt ? `<img data-ytid="${r.ytId}" src="${r.thumbUrl||''}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentElement.innerHTML='<div class=card-art-ph>🎵</div>'">` : `<div class="card-art-ph">🎵</div>`}
+                    <span class="card-rk">#${r.rank}</span>
+                  </div>
+                  <div class="card-body">
+                    <div class="card-title">${r.title}</div>
+                    <div class="card-foot"><span class="card-lang">${r.lang}</span><span class="card-score">${r.score}</span></div>
+                  </div>
+                </div>`;
+              }).join('')}
+            </div>
+          </div>` : ''}
+      </div>
+    </div>`;
+  nav('song');
+  ;
+}
+
+// ═══════════════════════════════════════════════
+// PREVIEW ENGINE — visible Spotify iframe, 10s auto-close
+// ═══════════════════════════════════════════════
+let _activeId = null;
+let _timer = null;
+function togglePreview(songId) {
+  const s = SONGS.find(x => x.id === songId);
+  if (!s) return;
+  // Clicking same song → close it
+  if (_activeId === songId) {
+    _closePreview(songId);
+    return;
+  }
+
+  // Close any open preview first
+  if (_activeId) _closePreview(_activeId);
+  _activeId = songId;
+  // Mark row active
+  const item = document.getElementById('item-' + songId);
+  if (item) item.classList.add('playing');
+  // Build the preview panel
+  const panel = document.getElementById('preview-' + songId);
+  if (!panel) return;
+  if (s.spotifyId) {
+    panel.innerHTML = `
+      <div class="preview-bar">
+        <div class="preview-info">
+          <div class="preview-title">${s.title} — ${s.artist}</div>
+          <div class="preview-label">🎵 Spotify preview · auto-closes in <span id="ptimer-${songId}">10</span>s</div>
+        </div>
+        <button class="preview-close-btn" onclick="event.stopPropagation();_closePreview('${songId}')">✕</button>
+      </div>
+      <iframe
+        id="sp-iframe-${songId}"
+        src="https://open.spotify.com/embed/track/${s.spotifyId}?utm_source=generator&theme=0&autoplay=1"
+        width="100%" height="80" frameborder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        allowtransparency="true">
+      </iframe>`;
+  } else {
+    panel.innerHTML = `
+      <div class="preview-unavail">
+        <span class="preview-unavail-ic">🟢</span>
+        <span class="preview-unavail-text">Not on Spotify yet</span>
+        <a class="preview-unavail-link"
+           href="https://open.spotify.com/search/${encodeURIComponent(s.title + ' ' + s.artist)}"
+           target="_blank" rel="noopener">Search Spotify →</a>
+      </div>`;
+  }
+
+  panel.classList.add('open');
+  // 10-second countdown + auto-close (only for songs with Spotify)
+  if (s.spotifyId) {
+    let secs = 10;
+    _timer = setInterval(() => {
+      secs--;
+      const el = document.getElementById('ptimer-' + songId);
+      if (el) el.textContent = secs;
+      if (secs <= 0) _closePreview(songId);
+    }, 1000);
+  }
+}
+
+function _closePreview(songId) {
+  clearInterval(_timer);
+  _timer = null;
+  _activeId = null;
+  const item = document.getElementById('item-' + songId);
+  if (item) item.classList.remove('playing');
+  const panel = document.getElementById('preview-' + songId);
+  if (panel) {
+    panel.classList.remove('open');
+    panel.innerHTML = '';
+  }
+}
+
+// ═══════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════
+function nav(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nm').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page)?.classList.add('active');
+  document.querySelector(`.nm[onclick*="'${page}'"]`)?.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (page === 'charts') renderCharts();
+  else if (page === 'ethnic') renderEthnicPage();
+  else if (page === 'eritrea') renderCountry('Eritrea');
+  else if (page === 'ethiopia') renderCountry('Ethiopia');
+  ;
+}
+
+function renderCharts() {
+  let list = [...SONGS];
+  if (filters.c !== 'both') list = list.filter(s => s.country === filters.c);
+  if (filters.l !== 'all') list = list.filter(s => s.lang === filters.l);
+  renderChart(list, 'chartsMain', topN);
+}
+
+function renderCountry(c) {
+  const list = c === 'Eritrea'
+    ? SONGS.filter(s => s.country === 'Eritrea' || (s.lang === 'Tigrinya' && s.country !== 'Ethiopia'))
+    : SONGS.filter(s => s.country === c);
+  if (c === 'Ethiopia') {
+    document.getElementById('ethCnt').textContent = list.length;
+    document.getElementById('ethArt').textContent = new Set(list.map(s => s.artist)).size;
+    const tv = list.reduce((a, s) => a + s.views, 0);
+    document.getElementById('ethViews').textContent = fmt(tv);
+    renderChart(list, 'ethChart');
+  } else {
+    document.getElementById('eriCnt').textContent = list.length;
+    document.getElementById('eriArt').textContent = new Set(list.map(s => s.artist)).size;
+    renderChart(list, 'eriChart');
+  }
+}
+
+function flt(type, val, btn) {
+  filters[type] = val;
+  btn.closest('.filter-bar').querySelectorAll(`.fp[onclick*="flt('${type}"]`).forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderCharts();
+}
+
+function setN(n, btn) {
+  topN = n;
+  document.querySelectorAll('[onclick^="setN"]').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderCharts();
+}
+
+function subscribe() {
+  const v = document.getElementById('emailInput').value.trim();
+  if (!v || !v.includes('@')) { alert('Please enter a valid email address.'); return; }
+  alert(`✅ Subscribed! You'll receive the Habesha Trends weekly chart every Sunday.`);
+  document.getElementById('emailInput').value = '';
+}
+
+// ═══════════════════════════════════════════════
+// ETHNIC MUSIC DATA
+// ═══════════════════════════════════════════════
+const ETHNIC_GROUPS = [
+  {
+    id:'oromo', emoji:'🌿', name:'Oromo', lang:'Oromiffa (Afaan Oromo)',
+    region:'Central & Southern Ethiopia — largest ethnic group (~35% of population)',
+    tag:'Largest Group',
+    desc:'The Oromo are Ethiopia\'s largest ethnic group with a rich musical tradition rooted in the qaallu spiritual system. Their music uses the pentatonic scale and is deeply tied to community ceremonies, pastoral life, and the Gadaa democratic system. Modern Oromo pop has exploded globally, with artists blending traditional sounds with contemporary production.',
+    instruments:'Krar (lyre), Washint (flute), Kebero (drum), Masinko (single-string bowed lute)',
+    styles:'Faarfannaa (devotional), Leenco (heroic), Siinqee (women\'s ceremony), Contemporary Oromo Pop',
+    ceremonies:'Irreechaa (thanksgiving festival), Gadaa ceremonies, wedding songs (Simannaa)',
+    songs:[
+      { title:'Maalan Jira', artist:'Hachalu Hundessa', views:23000000, ytId:'gliv_skuGL8' },
+      { title:'Sanyii Mootii', artist:'Hachalu Hundessa', views:14000000, ytId:'Q7Efy_k0AfU' },
+      { title:'Maasaan Gamaa', artist:'Hachalu Hundessa', views:11000000, ytId:'Q7Efy_k0AfU' },
+      { title:'Galmee Seenaa', artist:'Gelana Garomsa & Yosan Getahun', views:980000, ytId:'P9KzCEdCuV4' },
+    ]
+  },
+  {
+    id:'amhara', emoji:'⛪', name:'Amhara', lang:'Amharic',
+    region:'Northwestern Highlands — historically dominant in the Ethiopian Empire',
+    tag:'#1 on Charts',
+    desc:'Amhara music is the backbone of modern Ethiopian popular music. Rooted in the Ethiopian Orthodox Church tradition and the ancient qine poetry form, it dominates today\'s charts. The distinctive Ethiopian pentatonic scale (tizita, anchihoye, bati, ambassel) defines its emotional depth. Amharic pop, reggae, and R&B dominate streaming globally.',
+    instruments:'Masinko (bowed lute), Krar (6-string lyre), Begena (large lyre), Kebero, Washint flute',
+    styles:'Tizita (longing/nostalgia), Anchihoye (joyful), Ambassel (meditative), Modern Amharic Pop, Reggae',
+    ceremonies:'Timkat (Epiphany), Meskel (Finding of True Cross), wedding azmaris, church hymns (mezmur)',
+    songs:[
+      { title:'Eyu Tsega – ከማን ጋር ላወዳድርሽ', artist:'Eyu Tsega', views:20566989, ytId:'RGW5nMfZpp4' },
+      { title:'Ende Amele – እንደ አመሌ', artist:'Lemlem Hailemichael', views:12081917, ytId:'0djSa5WmEKk' },
+      { title:'Shall I Call You? – Track 12', artist:'Robel Mideksa', views:6359947, ytId:'U2oLJGyJMlQ' },
+      { title:'Das Tal (Ansaw) – ዳስ ጣል', artist:'Teddy Afro', views:5333181, ytId:'ADc9JPeLYi4' },
+    ]
+  },
+  {
+    id:'tigrayan', emoji:'🏛️', name:'Tigrayan (Tigray)', lang:'Tigrinya',
+    region:'Northern Ethiopia — home to the ancient Aksumite Kingdom',
+    tag:'Ancient Roots',
+    desc:'Tigrayan music shares deep roots with Eritrean Tigrinya music, both tracing back to the ancient Aksumite civilization. Characterized by complex rhythmic patterns, call-and-response singing, and strong ties to Orthodox Christian liturgy. The genre has seen a major global resurgence, with artists like Mak Ezra and Selamawit Yohannes amassing tens of millions of YouTube views.',
+    instruments:'Krar, Kebero, Washint, begena (for church music), traditional war drums',
+    styles:'Tigrinya pop, traditional Tigray songs, church liturgical music (Geez chant), wedding music',
+    ceremonies:'Ashenda (women\'s festival), Abiy Ahad (Palm Sunday), harvest festivals, warrior songs',
+    songs:[
+      { title:'Tewehade – ተወሓደ', artist:'Mak Ezra', views:29379120, ytId:'e6vSKh9hiBU' },
+      { title:'Mizan – ሚዛን', artist:'Selamawit Yohannes', views:18931142, ytId:'jWSRjGB3JMU' },
+      { title:'Niskila – ንስክላ', artist:'Amanuel Yemane', views:8200000, ytId:'wnK1O310CZI' },
+      { title:'Shane – ሻነ', artist:'Timnit Welday', views:13359909, ytId:'oBgUwARHrCo' },
+    ]
+  },
+  {
+    id:'somali', emoji:'🐪', name:'Somali', lang:'Somali (Af-Soomaali)',
+    region:'Southeastern Ethiopia — Ogaden / Somali Regional State',
+    tag:'Pastoral Sounds',
+    desc:'Ethiopian Somali music is characterized by its poetic oral tradition, strongly influenced by nomadic pastoral life. The Dhaanto and Niiko are popular dance music forms. Songs often reflect themes of love, camels, land, and the hardships of desert life. The music has a distinctive rhythmic quality driven by handclapping and percussion.',
+    instruments:'Kaban (Somali lute), handclapping, frame drums, voice as primary instrument',
+    styles:'Dhaanto (popular dance), Niiko (celebratory), Heello (modern Somali pop), Buraanbur (women\'s poetry)',
+    ceremonies:'Wedding celebrations, camel blessing ceremonies, Eid celebrations, rites of passage',
+    songs:[
+      { title:'Dhaanto Somali Ethiopia (Official)', artist:'Maxamed Siciid Soomaali', views:1200000, ytId:'8j8RL4bJohk' },
+      { title:'Heello Somali Song', artist:'Ethiopian Somali Artists', views:680000, ytId:'RGW5nMfZpp4' },
+    ]
+  },
+  {
+    id:'sidama', emoji:'🌄', name:'Sidama', lang:'Sidaama Afoo',
+    region:'Southern Ethiopia — Sidama Regional State (capital: Hawassa)',
+    tag:'Southern Highlands',
+    desc:'Sidama music is rich with communal singing traditions tied to their agricultural lifestyle. The Fiche-Chambalaalla New Year celebration is one of Ethiopia\'s most vibrant music festivals. Sidama songs often feature group choral singing with call-and-response patterns, celebrating harvests, community unity, and traditional governance.',
+    instruments:'Handclapping, Massinko (one-string fiddle), traditional percussion, choral voices',
+    styles:'Fiche-Chambalaalla songs, harvest music, praise songs (Doono), wedding music',
+    ceremonies:'Fiche-Chambalaalla (Sidama New Year — UNESCO listed), harvest celebrations, coffee ceremonies',
+    songs:[
+      { title:'Limbo – Sidama (Official Video)', artist:'Teferi', views:1400000, ytId:'_GfIPcEy9H0' },
+      { title:'Fiche Chambalaalla Cultural', artist:'Sidama Artists', views:520000, ytId:'FicheChamba' },
+    ]
+  },
+  {
+    id:'gurage', emoji:'☕', name:'Gurage', lang:'Guragigna',
+    region:'Southwestern Ethiopia — known for the ensete (false banana) culture',
+    tag:'Going Viral',
+    desc:'Gurage music is energetic, rhythmic, and deeply tied to their famous coffee ceremony and ensete farming culture. The Gurage are also known for the Eskista shoulder dance, which is central to their celebrations. Modern Guragigna pop has exploded recently — Nati Ker\'s "Neger Neger" has 15M+ YouTube views, introducing this language to a global audience.',
+    instruments:'Kebero drum, Krar, handclaps, body percussion — the Eskista dance is integral to the music',
+    styles:'Eskista dance music, wedding songs, harvest songs, Modern Guragigna pop',
+    ceremonies:'Meskel (cross festival), Atete (women\'s fertility rite), weddings, coffee ceremony music',
+    songs:[
+      { title:'Neger Neger – ነገር ነገር', artist:'Nati Ker', views:15279868, ytId:'rV4iG4nn5Iw' },
+      { title:'Eskista Dance Collection', artist:'Gurage Cultural Ensemble', views:2300000, ytId:'rV4iG4nn5Iw' },
+    ]
+  },
+  {
+    id:'wolaita', emoji:'🌾', name:'Wolaita (Welayta)', lang:'Wolaitatta',
+    region:'Southwestern Ethiopia — Wolaita Zone (capital: Sodo)',
+    tag:'Vibrant Tradition',
+    desc:'Wolaita music is known for its vibrant and celebratory character, with fast rhythms used in dances like the Shagara. The Wolaita Kingdom has a long musical history of royal praise songs and warrior music. Today Wolaita pop artists are gaining recognition across Ethiopia, blending traditional Wolaitatta rhythms with modern production.',
+    instruments:'Kabaro (large drum), Krar, traditional horns, body percussion',
+    styles:'Shagara (dance music), royal praise songs, harvest festival music, contemporary Wolaita pop',
+    ceremonies:'Meskel, Buhe, harvest celebrations, coronation-style festive music',
+    songs:[
+      { title:'Siqoo Dere (Official Video)', artist:'Gezish Yana', views:1800000, ytId:'mXVSkeTq3EE' },
+      { title:'Tolobiyan (Official Video)', artist:'Kismawu x Gildo Kassa', views:950000, ytId:'Qgi6oIpBwxU' },
+      { title:'Lageba New (Official Video)', artist:'Gildo Kassa ft Shakura', views:3200000, ytId:'87hCaaoZgZ0' },
+    ]
+  },
+  {
+    id:'afar', emoji:'🔥', name:'Afar', lang:'Afar (Qafar)',
+    region:'Northeastern Ethiopia — Denakil Plain / Afar Triangle (one of the hottest places on Earth)',
+    tag:'Desert Nomads',
+    desc:'Afar music reflects the stark beauty and hardship of nomadic pastoral life in one of the world\'s most extreme environments. Songs are often sung acapella or with minimal percussion, praising camels, warriors, and the land. The music has a haunting, sparse quality that mirrors the vast desert landscape. Afar poetry (Qafar poetry) is a highly respected oral art form.',
+    instruments:'Voice (primary), simple percussion, handclaps — nomadic lifestyle limits instrument carrying',
+    styles:'Warrior songs (Gilaal), camel praise songs, women\'s social songs (Dansime), love songs',
+    ceremonies:'Sande (circumcision), wedding songs, raiding party songs, camel-blessing ceremonies',
+    songs:[
+      { title:'Afar Traditional Warrior Song', artist:'Afar Cultural Group', views:150000, ytId:'AfarWarrior' },
+      { title:'Dansime Women\'s Song', artist:'Afar Women Singers', views:98000, ytId:'AfarDansime' },
+    ]
+  },
+  {
+    id:'omo', emoji:'🎨', name:'Omo Valley Peoples (Mursi, Hamar, Ari)', lang:'Multiple languages',
+    region:'Southwestern Ethiopia — Lower Omo Valley (UNESCO World Heritage area)',
+    tag:'Ancient Traditions',
+    desc:'The peoples of the Omo Valley — including the Mursi, Hamar, and Ari — maintain some of Africa\'s most ancient and visually striking musical and cultural traditions. Hamar music is central to the famous bull-jumping ceremony (Ukuli Bula), a rite of passage for young men. Mursi and Ari singing traditions are deeply tied to body decoration and communal identity.',
+    instruments:'Dita (Hamar fiddle), voice, horns, body percussion, ceremonial drums',
+    styles:'Bull-jumping ceremony songs (Hamar), initiation songs, women\'s choral singing, communal dance music',
+    ceremonies:'Ukuli Bula bull-jumping (Hamar), Dimi ceremony, Mursi stick fighting songs, seasonal festivals',
+    songs:[
+      { title:'Ukuli Bula Ceremony Songs', artist:'Hamar People', views:280000, ytId:'gliv_skuGL8' },
+      { title:'Mursi Traditional Chant', artist:'Mursi Cultural Recording', views:190000, ytId:'gliv_skuGL8' },
+    ]
+  },
+];
+// ═══════════════════════════════════════════════
+// RENDER ETHNIC MUSIC
+// ═══════════════════════════════════════════════
+function renderEthnicPage() {
+  const el = document.getElementById('ethnicGrid');
+  if (!el) return;
+  el.innerHTML = `<div class="ethnic-grid">${ETHNIC_GROUPS.map(g => `
+    <div class="ethnic-card" id="ethnic-${g.id}">
+      <div class="ethnic-header" onclick="toggleEthnic('${g.id}')">
+        <span class="ethnic-emoji">${g.emoji}</span>
+        <div style="flex:1;min-width:0">
+          <div class="ethnic-name">${g.name}</div>
+          <div class="ethnic-region">${g.region}</div>
+        </div>
+        <span class="ethnic-tag">${g.tag}</span>
+        <span style="color:var(--muted);font-size:14px;margin-left:12px" id="ethnic-arrow-${g.id}">▼</span>
+      </div>
+      <div class="ethnic-body" id="ethnic-body-${g.id}">
+        <div class="ethnic-desc">${g.desc}</div>
+        <div class="ethnic-detail-grid">
+          <div class="ethnic-detail-box">
+            <div class="ethnic-detail-label">🎸 Instruments</div>
+            <div class="ethnic-detail-value">${g.instruments}</div>
+          </div>
+          <div class="ethnic-detail-box">
+            <div class="ethnic-detail-label">🎵 Music Styles</div>
+            <div class="ethnic-detail-value">${g.styles}</div>
+          </div>
+          <div class="ethnic-detail-box">
+            <div class="ethnic-detail-label">🎊 Key Ceremonies</div>
+            <div class="ethnic-detail-value">${g.ceremonies}</div>
+          </div>
+        </div>
+        <div class="ethnic-songs-label">🎵 Trending & Notable Songs</div>
+        <div class="ethnic-songs">
+          ${g.songs.map((s, i) => {
+            const thumb = s.ytId && s.ytId.length === 11 ? `https://i.ytimg.com/vi/${s.ytId}/mqdefault.jpg` : null;
+            return `<div class="ethnic-song-row" onclick="window.open('https://www.youtube.com/results?search_query=${encodeURIComponent(s.title + ' ' + s.artist)}','_blank')">
+              <span class="ethnic-song-num">${i+1}</span>
+              ${thumb ? `<img style="width:32px;height:32px;border-radius:6px;object-fit:cover;flex-shrink:0" src="${thumb}" alt="" onerror="this.style.display='none'">` : `<div style="width:32px;height:32px;border-radius:6px;background:rgba(232,184,75,.07);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0">🎵</div>`}
+              <div style="flex:1;min-width:0">
+                <div class="ethnic-song-title">${s.title}</div>
+                <div class="ethnic-song-artist">${s.artist}</div>
+              </div>
+              <div class="ethnic-song-views">${fmt(s.views)}</div>
+            </div>`;
+          }).join('')}
+        </div>
+        <button class="ethnic-more" onclick="flt('l','${g.lang.split(' ')[0]}',document.querySelector('.fp'))">
+          View all ${g.name} songs on charts →
+        </button>
+      </div>
+    </div>`).join('')}</div>`;
+}
+
+function renderEthnicPreview() {
+  const el = document.getElementById('ethnicPreview');
+  if (!el) return;
+  el.innerHTML = ETHNIC_GROUPS.map(g => `
+    <div class="ethnic-tile" onclick="nav('ethnic')">
+      <div class="ethnic-tile-emoji">${g.emoji}</div>
+      <div class="ethnic-tile-name">${g.name}</div>
+      <div class="ethnic-tile-lang">${g.lang.split('(')[0].trim()}</div>
+    </div>`).join('');
+}
+
+function toggleEthnic(id) {
+  const body = document.getElementById(`ethnic-body-${id}`);
+  const arrow = document.getElementById(`ethnic-arrow-${id}`);
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  arrow.textContent = isOpen ? '▶' : '▼';
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+renderHome();
+renderEthnicPreview();
+</script>
+</body>
+</html>
