@@ -989,68 +989,45 @@ function showSong(id) {
 // ═══════════════════════════════════════════════
 // ═══════════════════════════════════════════════
 // PREVIEW ENGINE
-// Spotify songs  → Spotify embed, 10s auto-close
-// YouTube-only   → YouTube embed, 10s auto-close
+// Uses iTunes Search API to get a real 30-sec MP3
+// preview_url starting at the chorus/best part.
+// Plays with HTML5 <audio>, stops after 10 seconds.
+// Falls back to YouTube embed if iTunes has nothing.
 // ═══════════════════════════════════════════════
-let _activeId = null;
-let _timer    = null;
+let _activeId   = null;
+let _audio      = null;
+let _timer      = null;
+const _previewCache = {};
 
-// Best-part start time (seconds) for YouTube-only songs
+// Approximate chorus start (seconds) for YouTube fallback
 const CHORUS_START = {
   '10':47,'20':32,'22':28,'23':38,'24':35,'25':30,
   'e1':42,'e3':40,'e5':35,'e6':32,'e7':45,
   'e8':38,'e9':36,'e10':40,'e11':44,'e12':38
 };
 
-function togglePreview(songId) {
-  const s = SONGS.find(x => x.id === songId);
-  if (!s) return;
-  if (_activeId === songId) { _closePreview(songId); return; }
-  if (_activeId) _closePreview(_activeId);
-  _activeId = songId;
-  const item = document.getElementById('item-' + songId);
-  if (item) item.classList.add('playing');
-  const panel = document.getElementById('preview-' + songId);
-  if (!panel) return;
+async function _getPreviewUrl(song) {
+  const key = song.id;
+  if (_previewCache[key] !== undefined) return _previewCache[key];
+  try {
+    // Strip non-ASCII (Amharic) for iTunes search
+    const clean = s => s.replace(/[^\u0000-\u007F]/g,'').trim();
+    const term  = encodeURIComponent(clean(song.artist) + ' ' + clean(song.title));
+    if (!term || term.length < 3) { _previewCache[key] = null; return null; }
+    const res  = await fetch(`https://itunes.apple.com/search?term=${term}&media=music&entity=song&limit=3`);
+    const data = await res.json();
+    if (data.results && data.results.length > 0) {
+      // Pick the result with a previewUrl
+      const hit = data.results.find(r => r.previewUrl) || data.results[0];
+      _previewCache[key] = hit.previewUrl || null;
+      return _previewCache[key];
+    }
+  } catch(e) {}
+  _previewCache[key] = null;
+  return null;
+}
 
-  if (s.spotifyId) {
-    // ── Spotify preview ────────────────────────
-    panel.innerHTML = `
-      <div class="preview-bar">
-        <div class="preview-info">
-          <div class="preview-title">${s.title}</div>
-          <div class="preview-label">🎵 10-sec preview (chorus) · closes in <span id="ptimer-${songId}">10</span>s</div>
-        </div>
-        <button class="preview-close-btn" onclick="event.stopPropagation();_closePreview('${songId}')">✕</button>
-      </div>
-      <iframe
-        id="sp-iframe-${songId}"
-        src="https://open.spotify.com/embed/track/${s.spotifyId}?utm_source=generator&theme=0&autoplay=1"
-        width="100%" height="80" frameborder="0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        allowtransparency="true">
-      </iframe>`;
-  } else {
-    // ── YouTube preview fallback ───────────────
-    const start = CHORUS_START[songId] || 30;
-    panel.innerHTML = `
-      <div class="preview-bar">
-        <div class="preview-info">
-          <div class="preview-title">${s.title}</div>
-          <div class="preview-label">▶ 10-sec preview · closes in <span id="ptimer-${songId}">10</span>s</div>
-        </div>
-        <button class="preview-close-btn" onclick="event.stopPropagation();_closePreview('${songId}')">✕</button>
-      </div>
-      <iframe
-        id="yt-iframe-${songId}"
-        src="https://www.youtube.com/embed/${s.ytId}?autoplay=1&start=${start}&end=${start+10}&controls=0&modestbranding=1&rel=0"
-        width="100%" height="80" frameborder="0"
-        allow="autoplay; encrypted-media"
-        allowfullscreen>
-      </iframe>`;
-  }
-
-  panel.classList.add('open');
+function _startCountdown(songId) {
   let secs = 10;
   _timer = setInterval(() => {
     secs--;
@@ -1060,9 +1037,83 @@ function togglePreview(songId) {
   }, 1000);
 }
 
+async function togglePreview(songId) {
+  const s = SONGS.find(x => x.id === songId);
+  if (!s) return;
+  if (_activeId === songId) { _closePreview(songId); return; }
+  if (_activeId) _closePreview(_activeId);
+
+  _activeId = songId;
+  const item = document.getElementById('item-' + songId);
+  if (item) item.classList.add('playing');
+  const panel = document.getElementById('preview-' + songId);
+  if (!panel) return;
+
+  // Show loading state
+  panel.innerHTML = `
+    <div class="preview-bar">
+      <div class="preview-info">
+        <div class="preview-title">${s.title}</div>
+        <div class="preview-label" id="plabel-${songId}">⏳ Loading preview…</div>
+      </div>
+      <button class="preview-close-btn" onclick="event.stopPropagation();_closePreview('${songId}')">✕</button>
+    </div>`;
+  panel.classList.add('open');
+
+  // Try iTunes first
+  const previewUrl = await _getPreviewUrl(s);
+
+  if (previewUrl) {
+    // ── iTunes MP3 preview ─────────────────────
+    // Stop any existing audio
+    if (_audio) { _audio.pause(); _audio = null; }
+
+    _audio = new Audio(previewUrl);
+    _audio.volume = 1;
+    _audio.play().then(() => {
+      const label = document.getElementById('plabel-' + songId);
+      if (label) label.innerHTML = '🎵 10-sec preview (chorus) · closes in <span id="ptimer-' + songId + '">10</span>s';
+      _startCountdown(songId);
+    }).catch(() => {
+      // Audio play failed - fall back to YouTube
+      _audio = null;
+      _ytFallback(s, panel, songId);
+    });
+
+    // Progress bar
+    const bar = document.createElement('div');
+    bar.id = 'pbar-' + songId;
+    bar.style.cssText = 'height:2px;background:#1DB954;width:0%;transition:width 10s linear;margin-top:4px';
+    panel.querySelector('.preview-bar').appendChild(bar);
+    setTimeout(() => { if (bar.parentNode) bar.style.width = '100%'; }, 50);
+
+  } else {
+    // ── YouTube embed fallback ─────────────────
+    _ytFallback(s, panel, songId);
+  }
+}
+
+function _ytFallback(s, panel, songId) {
+  const start = CHORUS_START[songId] || 30;
+  const label = document.getElementById('plabel-' + songId);
+  if (label) label.innerHTML = '▶ 10-sec preview · closes in <span id="ptimer-' + songId + '">10</span>s';
+
+  const ytDiv = document.createElement('div');
+  ytDiv.innerHTML = `<iframe
+    src="https://www.youtube.com/embed/${s.ytId}?autoplay=1&start=${start}&end=${start+10}&controls=0&modestbranding=1&rel=0&mute=0"
+    width="100%" height="72" frameborder="0"
+    allow="autoplay; encrypted-media" allowfullscreen
+    style="border-radius:0 0 12px 12px;display:block">
+  </iframe>`;
+  panel.appendChild(ytDiv.firstElementChild);
+  _startCountdown(songId);
+}
+
 function _closePreview(songId) {
   clearInterval(_timer);
-  _timer = null; _activeId = null;
+  _timer = null;
+  if (_audio) { _audio.pause(); _audio.currentTime = 0; _audio = null; }
+  _activeId = null;
   const item = document.getElementById('item-' + songId);
   if (item) item.classList.remove('playing');
   const panel = document.getElementById('preview-' + songId);
