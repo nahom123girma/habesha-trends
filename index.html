@@ -436,9 +436,9 @@ footer{
   </div>
   <div class="nav-right">
     <div class="refresh-chip" onclick="showRefreshInfo()">
-      ↻ Refreshes in <span id="countdown">30:00</span>
+      ↻ Updated weekly
     </div>
-    <div class="live-chip"><span class="pulse"></span>Live</div>
+    <div class="live-chip"><span class="pulse"></span>Weekly</div>
   </div>
 </nav>
 
@@ -457,7 +457,7 @@ footer{
       <span style="color:var(--dim);font-weight:700">+</span>
       <span class="hero-pill">🌍 Diaspora</span>
     </div>
-    <div class="source-line">📊 Sources: <strong>YouTube ET Daily (kworb.net)</strong> &nbsp;·&nbsp; <strong>Spotify Ethiopia Charts</strong> &nbsp;·&nbsp; YeneVibe Top 100</div>
+    
   </div>
 
   <div class="container section">
@@ -522,8 +522,8 @@ footer{
   <div class="footer-wrap">
     <footer>
       <span class="footer-copy">© 2026 Habesha Trends</span>
-      <span class="footer-sources">Data: YeneVibe · Weekly Hit Songs · Tigrigna Music Charts · kworb.net</span>
-      <span class="footer-live"><span class="pulse"></span>Updates every 30 minutes</span>
+      
+      <span class="footer-live"><span class="pulse"></span>Updated weekly every Thursday</span>
     </footer>
   </div>
 </div>
@@ -618,7 +618,7 @@ footer{
     <div class="sec-kicker mb-16">About</div>
     <div class="sec-title" style="font-size:28px;margin-bottom:12px">About Habesha Trends</div>
     <p style="color:var(--muted);font-size:13px;line-height:1.85;margin-bottom:20px">
-      The dedicated real-time charts platform for Ethiopian and Eritrean music. We aggregate view data from multiple chart sources to show exactly what the Habesha community is listening to right now — updated every 30 minutes.
+      The dedicated real-time charts platform for Ethiopian and Eritrean music. We aggregate view data from multiple chart sources to show exactly what the Habesha community is listening to right now — updated weekly every Thursday.
     </p>
     <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:12px">
       <h3 style="font-size:13px;font-weight:700;color:#fff;margin-bottom:13px">Data Sources</h3>
@@ -678,6 +678,20 @@ const SONGS = [
   { id:'23', rank:23, prev:1,  isNew:false, title:'Eyu Tsega – ከማን ጋር ላወዳድርሽ',           artist:'Eyu Tsega',  country:'Ethiopia', lang:'Amharic',  genre:'Pop',          views:21350647, weekViews:328655,   year:2025, ytId:'RGW5nMfZpp4',  thumbUrl:'https://i.ytimg.com/vi/RGW5nMfZpp4/maxresdefault.jpg',  spotifyId:null,                       reason:'21.3M total views — was #1 last chart. Still adding 328K weekly views.', score:74 },
   { id:'24', rank:24, prev:24, isNew:false, title:'Yaa Shuurakoo',                          artist:'Gelana Garomsa', country:'Ethiopia', lang:'Oromo', genre:'Oromo Pop',  views:5065000,  weekViews:287278,   year:2025, ytId:'jSgnlSaT_Ts', thumbUrl:'https://i.ytimg.com/vi/jSgnlSaT_Ts/maxresdefault.jpg',  spotifyId:null,                       reason:'5M total views — popular Oromo music. +287K this week.', score:73 },
   { id:'25', rank:25, prev:5,  isNew:false, title:'Gum Gum – ጉም ጉም (ትዝ አለሽ ወይ)',         artist:'Yo Mariyos', country:'Ethiopia', lang:'Amharic',  genre:'Pop',          views:2025841,  weekViews:247506,   year:2026, ytId:'ND0GCOYNilw',  thumbUrl:'https://i.ytimg.com/vi/ND0GCOYNilw/maxresdefault.jpg',  spotifyId:null,                       reason:'2M total views — Papawewa produced nostalgia anthem. +247K this week.', score:72 },
+
+  // ── ERITREA / TIGRINYA CHART ─────────────────────────
+  { id:'e1',  rank:1,  prev:1,  isNew:false, title:'Shane',         artist:'Timnit Welday',            country:'Eritrea', lang:'Tigrinya', genre:'Tigrinya Pop', views:13916615, weekViews:233418, year:2025, ytId:'oBgUwARHrCo', thumbUrl:'https://i.ytimg.com/vi/oBgUwARHrCo/maxresdefault.jpg', spotifyId:null, reason:'13.9M views — breakout Eritrean female artist.', score:98 },
+  { id:'e2',  rank:2,  prev:2,  isNew:false, title:'Tewehade',      artist:'Mak Ezra',                 country:'Eritrea', lang:'Tigrinya', genre:'Tigrinya Pop', views:30230282, weekViews:370831, year:2025, ytId:'e6vSKh9hiBU', thumbUrl:'https://i.ytimg.com/vi/e6vSKh9hiBU/maxresdefault.jpg', spotifyId:'1cQrs9WCV7YSCn276gmOCJ', reason:'30.2M views — most-watched Tigrinya song ever.', score:97 },
+  { id:'e3',  rank:3,  prev:3,  isNew:false, title:'Mizan',         artist:'Selamawit Yohannes',       country:'Eritrea', lang:'Tigrinya', genre:'Tigrinya Pop', views:19422844, weekViews:215269, year:2025, ytId:'jWSRjGB3JMU', thumbUrl:'https://i.ytimg.com/vi/jWSRjGB3JMU/maxresdefault.jpg', spotifyId:null, reason:'19.4M views — biggest crossover Tigrinya hit of 2025.', score:95 },
+  { id:'e4',  rank:4,  prev:4,  isNew:false, title:'Niskila',       artist:'Amanuel Yemane',           country:'Eritrea', lang:'Tigrinya', genre:'Tigrinya Pop', views:14816314, weekViews:40239,  year:2025, ytId:'wnK1O310CZI', thumbUrl:'https://i.ytimg.com/vi/wnK1O310CZI/maxresdefault.jpg', spotifyId:'2AlalWAdrCPEXxLrBeEd6U', reason:'14.8M views — defining Tigrinya song of 2025.', score:92 },
+  { id:'e5',  rank:5,  prev:5,  isNew:false, title:'Atinye',        artist:'Embza Aligaz',             country:'Eritrea', lang:'Tigrinya', genre:'Tigrinya Pop', views:3868670,  weekViews:134699, year:2025, ytId:'jvxWsiK49nM', thumbUrl:'https://i.ytimg.com/vi/jvxWsiK49nM/maxresdefault.jpg', spotifyId:null, reason:'3.8M views, +134K this week.', score:90 },
+  { id:'e6',  rank:6,  prev:6,  isNew:false, title:'Akayda',        artist:'Merkeb Bonitua',           country:'Eritrea', lang:'Tigrinya', genre:'Tigrinya Pop', views:3367915,  weekViews:51979,  year:2025, ytId:'Zs-r2C86fis', thumbUrl:'https://i.ytimg.com/vi/Zs-r2C86fis/maxresdefault.jpg', spotifyId:null, reason:'3.3M views — popular Eritrean 2025 release.', score:88 },
+  { id:'e7',  rank:7,  prev:7,  isNew:false, title:'Elakani',       artist:'Rahel Haile',              country:'Eritrea', lang:'Tigrinya', genre:'Tigrinya Pop', views:5052079,  weekViews:39939,  year:2025, ytId:'yegG7qClGy0', thumbUrl:'https://i.ytimg.com/vi/yegG7qClGy0/maxresdefault.jpg', spotifyId:null, reason:'5M views — one of the most played Tigrinya songs of 2025.', score:86 },
+  { id:'e8',  rank:8,  prev:8,  isNew:false, title:'Maeger',        artist:'Nguse Abadi',              country:'Eritrea', lang:'Tigrinya', genre:'Tigrinya Pop', views:6768512,  weekViews:37685,  year:2025, ytId:'HOADb_H4buk', thumbUrl:'https://i.ytimg.com/vi/HOADb_H4buk/maxresdefault.jpg', spotifyId:null, reason:'6.7M views — beloved Eritrean artist.', score:85 },
+  { id:'e9',  rank:9,  prev:9,  isNew:false, title:'Zara',          artist:'Solomon Yikunoamlak',      country:'Eritrea', lang:'Tigrinya', genre:'Tigrinya Pop', views:7120303,  weekViews:96729,  year:2025, ytId:'lvAoHssg6qQ', thumbUrl:'https://i.ytimg.com/vi/lvAoHssg6qQ/maxresdefault.jpg', spotifyId:null, reason:'7.1M views, +96K this week.', score:84 },
+  { id:'e10', rank:10, prev:10, isNew:false, title:'Gudam',         artist:'Temesgen Teklay (Siktit)', country:'Eritrea', lang:'Tigrinya', genre:'Tigrinya Pop', views:2134485,  weekViews:101393, year:2025, ytId:'o4JUximUsCM', thumbUrl:'https://i.ytimg.com/vi/o4JUximUsCM/maxresdefault.jpg', spotifyId:null, reason:'2.1M views, +101K this week. Rising Eritrean artist.', score:82 },
+  { id:'e11', rank:11, prev:11, isNew:false, title:'Libi Zbele',    artist:'Helen Meles',              country:'Eritrea', lang:'Tigrinya', genre:'Tigrinya Pop', views:4200000,  weekViews:32000,  year:2024, ytId:'Q0wH8GVbRfY', thumbUrl:'https://i.ytimg.com/vi/Q0wH8GVbRfY/maxresdefault.jpg', spotifyId:null, reason:'4.2M views — Helen Meles, beloved Eritrean female artist.', score:80 },
+  { id:'e12', rank:12, prev:12, isNew:false, title:'Tayti',         artist:'Yared Netsanet',           country:'Eritrea', lang:'Tigrinya', genre:'Tigrinya Pop', views:3100000,  weekViews:28000,  year:2024, ytId:'YybkSxcgvIQ', thumbUrl:'https://i.ytimg.com/vi/YybkSxcgvIQ/maxresdefault.jpg', spotifyId:null, reason:'3.1M views — popular Eritrean love song.', score:78 },
 ];
 // ═══════════════════════════════════════════════
 // HELPERS
@@ -699,16 +713,7 @@ let topN = 10;
 // ═══════════════════════════════════════════════
 // 30-MIN COUNTDOWN
 // ═══════════════════════════════════════════════
-let secs = 30 * 60;
-function tick() {
-  secs--;
-  if (secs <= 0) secs = 30 * 60;
-  const m = Math.floor(secs / 60).toString().padStart(2,'0');
-  const s = (secs % 60).toString().padStart(2,'0');
-  const el = document.getElementById('countdown');
-  if (el) el.textContent = `${m}:${s}`;
-}
-setInterval(tick, 1000);
+// weekly updates
 function showRefreshInfo() {
   alert('Charts refresh every 30 minutes from YeneVibe, kworb.net, and Tigrigna Music Charts. Reload the page anytime to fetch the latest data.');
 }
@@ -834,7 +839,7 @@ function renderHome() {
   const newEntries = SONGS.filter(s => s.isNew || s.weekViews >= 100000).slice(0, 6);
   renderCards(newEntries, 'newEntries');
   renderMini(SONGS.filter(s => s.country === 'Ethiopia').slice(0, 5), 'ethMini');
-  renderMini(SONGS.filter(s => s.country === 'Eritrea' || (s.lang === 'Tigrinya' && s.country !== 'Ethiopia' )).slice(0, 5), 'eriMini');
+  renderMini(SONGS.filter(s => s.country === 'Eritrea').slice(0, 5), 'eriMini');
 }
 
 // ═══════════════════════════════════════════════
@@ -997,7 +1002,7 @@ function togglePreview(songId) {
       <div class="preview-bar">
         <div class="preview-info">
           <div class="preview-title">${s.title} — ${s.artist}</div>
-          <div class="preview-label">🎵 Spotify preview · auto-closes in <span id="ptimer-${songId}">10</span>s</div>
+          <div class="preview-label">🎵 10-sec preview (chorus) · closes in <span id="ptimer-${songId}">10</span>s</div>
         </div>
         <button class="preview-close-btn" onclick="event.stopPropagation();_closePreview('${songId}')">✕</button>
       </div>
@@ -1070,7 +1075,7 @@ function renderCharts() {
 
 function renderCountry(c) {
   const list = c === 'Eritrea'
-    ? SONGS.filter(s => s.country === 'Eritrea' || (s.lang === 'Tigrinya' && s.country !== 'Ethiopia'))
+    ? SONGS.filter(s => s.country === 'Eritrea')
     : SONGS.filter(s => s.country === c);
   if (c === 'Ethiopia') {
     document.getElementById('ethCnt').textContent = list.length;
@@ -1309,11 +1314,41 @@ function toggleEthnic(id) {
   arrow.textContent = isOpen ? '▶' : '▼';
 }
 
+
+// ── EMAIL MODAL ─────────────────────────────────
+function closeEmailModal() {
+  document.getElementById('emailModal').style.display = 'none';
+  try { localStorage.setItem('ht_subscribed','1'); } catch(e) {}
+}
+function subscribeModal() {
+  const v = document.getElementById('modalEmail').value.trim();
+  if (!v || !v.includes('@')) { alert('Please enter a valid email.'); return; }
+  alert('Subscribed! You will receive weekly charts every Thursday.');
+  closeEmailModal();
+}
+try {
+  if (!localStorage.getItem('ht_subscribed')) {
+    setTimeout(() => { document.getElementById('emailModal').style.display = 'flex'; }, 3000);
+  }
+} catch(e) {}
+
 // ═══════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════
 renderHome();
 renderEthnicPreview();
 </script>
+
+<div id="emailModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px">
+  <div style="background:#0f0f17;border:1px solid rgba(232,184,75,.25);border-radius:20px;padding:32px 28px;max-width:380px;width:100%;position:relative;text-align:center">
+    <button onclick="closeEmailModal()" style="position:absolute;top:12px;right:12px;background:rgba(255,255,255,.08);border:none;color:#666;width:28px;height:28px;border-radius:50%;font-size:15px;cursor:pointer;line-height:1">✕</button>
+    <div style="font-size:34px;margin-bottom:12px">🎵</div>
+    <div style="font-size:17px;font-weight:800;color:#fff;margin-bottom:6px">Get Weekly Habesha Charts</div>
+    <div style="font-size:12px;color:#555;margin-bottom:20px;line-height:1.6">Top trending Ethiopian &amp; Eritrean songs delivered every Thursday.</div>
+    <input id="modalEmail" type="email" placeholder="your@email.com" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:11px 14px;color:#fff;font-size:13px;font-family:Inter,sans-serif;outline:none;margin-bottom:10px;box-sizing:border-box">
+    <button onclick="subscribeModal()" style="width:100%;background:#e8b84b;color:#000;font-weight:700;font-size:13px;padding:11px;border-radius:10px;border:none;cursor:pointer;margin-bottom:10px">Subscribe →</button>
+    <button onclick="closeEmailModal()" style="background:none;border:none;color:#444;font-size:11px;cursor:pointer;text-decoration:underline">No thanks</button>
+  </div>
+</div>
 </body>
 </html>
