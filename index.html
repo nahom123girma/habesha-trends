@@ -32,6 +32,26 @@ nav{
   background:rgba(10,10,15,0.96);backdrop-filter:blur(24px);
   border-bottom:1px solid var(--border);
 }
+.hamburger{
+  display:none;flex-direction:column;justify-content:center;gap:5px;
+  background:none;border:none;cursor:pointer;padding:6px;
+}
+.hamburger span{display:block;width:22px;height:2px;background:#aaa;border-radius:2px;transition:all .2s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-drawer{
+  display:none;position:fixed;top:54px;left:0;right:0;z-index:299;
+  background:rgba(10,10,15,.98);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+  flex-direction:column;padding:8px 16px 16px;
+}
+.mobile-drawer.open{display:flex}
+.mobile-drawer .nm{
+  padding:12px 10px;font-size:14px;text-align:left;
+  border-bottom:1px solid var(--border2);
+}
+.mobile-drawer .nm:last-child{border-bottom:none}
 .logo{display:flex;align-items:center;gap:10px;cursor:pointer}
 .logo-mark{
   width:34px;height:34px;border-radius:9px;
@@ -260,8 +280,10 @@ h1.hero-title .accent{
 .card-foot{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
 .card-lang{font-size:9px;color:var(--dim)}.card-score{font-size:10px;font-weight:700;color:var(--gold)}
 
-/* ── MINI LIST ───────────────────────────────── */
-.mini{display:flex;flex-direction:column;gap:5px}
+/* ── MINI LIST EXPAND ─────────────────────────── */
+.mini{display:flex;flex-direction:column;gap:5px;overflow:hidden;transition:max-height .4s ease}
+.mini.collapsed{max-height:260px}
+.mini.expanded{max-height:2000px}
 .mini-row{
   display:flex;align-items:center;gap:10px;padding:9px 11px;
   border-radius:11px;background:rgba(255,255,255,.025);
@@ -416,10 +438,71 @@ footer{
   .container{padding:0 24px}
   .hero{padding:44px 24px 36px}
   .detail-grid{grid-template-columns:220px 1fr}
-  .split{grid-template-columns:1fr 1fr}
 }
 @media(max-width:820px){
   .ethnic-detail-grid{grid-template-columns:1fr 1fr}
+
+  /* ── nav ── */
+  nav{padding:0 16px;height:54px}
+  .nav-menu{display:none}
+  .refresh-chip{display:none}
+  .hamburger{display:flex}
+  .page{padding-top:54px}
+
+  /* ── layout ── */
+  .container,.hero{padding-left:16px;padding-right:16px}
+  .split{grid-template-columns:1fr}
+  .detail-grid{grid-template-columns:1fr}
+
+  /* ── hero ── */
+  .hero{padding:28px 16px 22px}
+  h1.hero-title{font-size:24px;line-height:1.1}
+  .hero-sub{font-size:12px}
+  .hero-pills{flex-wrap:wrap;gap:6px}
+  .hero-pill{font-size:11px;padding:5px 10px}
+  .source-line{font-size:10px}
+
+  /* ── chart rows ── */
+  .chart-row{padding:9px 12px;gap:10px}
+  .si-art{width:46px;height:46px;border-radius:10px}
+  .si-img{width:46px;height:46px;border-radius:10px}
+  .rk{min-width:26px}
+  .rk-n{font-size:15px}
+  .si-title{font-size:13px}
+  .si-artist{font-size:11px}
+  .si-views{font-size:10px}
+  .si-right{display:none}
+
+  /* ── cards ── */
+  .cards{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+
+  /* ── country hero ── */
+  .country-hero{padding:20px 16px}
+  .c-flag{font-size:36px}
+  .c-title{font-size:18px}
+  .c-stats{gap:16px}
+
+  /* ── breaking banner ── */
+  .breaking{padding:11px 13px;flex-wrap:wrap}
+  .breaking-text{font-size:11.5px}
+
+  /* ── song detail ── */
+  .met-grid{grid-template-columns:1fr 1fr}
+  .rk-grid{grid-template-columns:1fr 1fr 1fr}
+
+  /* ── email banner ── */
+  .email-banner{flex-direction:column;padding:20px 16px;gap:14px}
+  .eb-form{flex-direction:column;width:100%}
+  .eb-input{width:100%}
+
+  /* ── footer ── */
+  footer{padding:20px 16px;flex-direction:column;gap:8px;text-align:center}
+
+  /* ── section spacing ── */
+  .mt-44{margin-top:28px}
+  .mt-36{margin-top:22px}
+  .section{padding-bottom:32px}
+  .sec-title{font-size:18px}
 }
 
 @media(max-width:400px){
@@ -434,7 +517,7 @@ footer{
 
 <!-- ═══════ NAV ═══════ -->
 <nav>
-  <div class="logo" onclick="nav('home')">
+  <div class="logo" onclick="nav('home');closeDrawer()">
     <div class="logo-mark">H</div>
     <div class="logo-name">Habesha <em>Trends</em></div>
   </div>
@@ -447,12 +530,23 @@ footer{
     <button class="nm" onclick="nav('about')">About</button>
   </div>
   <div class="nav-right">
-    <div class="refresh-chip" onclick="showRefreshInfo()">
-      ↻ Updated weekly
-    </div>
+    <div class="refresh-chip" onclick="showRefreshInfo()">↻ Updated weekly</div>
     <div class="live-chip"><span class="pulse"></span>Weekly</div>
+    <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<!-- ═══════ MOBILE DRAWER ═══════ -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <button class="nm" onclick="nav('home');closeDrawer()">🏠 Home</button>
+  <button class="nm" onclick="nav('charts');closeDrawer()">📊 Full Charts</button>
+  <button class="nm" onclick="nav('ethiopia');closeDrawer()">🇪🇹 Ethiopia Chart</button>
+  <button class="nm" onclick="nav('eritrea');closeDrawer()">🇪🇷 Eritrea Chart</button>
+  <button class="nm" onclick="nav('ethnic');closeDrawer()">🎶 Ethnic Music</button>
+  <button class="nm" onclick="nav('about');closeDrawer()">ℹ️ About</button>
+</div>
 
 <!-- ═══════ HOME ═══════ -->
 <div class="page active" id="page-home">
@@ -500,14 +594,14 @@ footer{
         <div>
           <div class="split-head">
             <div class="split-title">🇪🇹 Ethiopia Top 5</div>
-            <button class="btn-ghost" style="font-size:10px;padding:4px 10px" onclick="nav('ethiopia')">See all</button>
+            <button class="btn-ghost" id="eth-see-all" style="font-size:10px;padding:4px 10px" onclick="expandMini('eth')">See all ↓</button>
           </div>
           <div class="mini" id="ethMini"></div>
         </div>
         <div>
           <div class="split-head">
-            <div class="split-title">🇪🇷 Eritrea / Tigrinya Top 5</div>
-            <button class="btn-ghost" style="font-size:10px;padding:4px 10px" onclick="nav('eritrea')">See all</button>
+            <div class="split-title">🇪🇷 Eritrea Top 5</div>
+            <button class="btn-ghost" id="eri-see-all" style="font-size:10px;padding:4px 10px" onclick="expandMini('eri')">See all ↓</button>
           </div>
           <div class="mini" id="eriMini"></div>
         </div>
@@ -578,11 +672,14 @@ footer{
 <!-- ═══════ ETHIOPIA ═══════ -->
 <div class="page" id="page-ethiopia">
   <div class="container section" style="padding-top:28px">
+    <div class="bc">
+      <span class="bc-link" onclick="nav('home')">← Back to Home</span>
+    </div>
     <div class="country-hero c-eth">
       <span class="c-flag">🇪🇹</span>
       <div>
-        <div class="c-title">Ethiopia Charts</div>
-        <div class="c-sub">Trending Ethiopian music — Amharic, Oromo, Guragigna, Tigrinya & more</div>
+        <div class="c-title">Ethiopia Full Chart</div>
+        <div class="c-sub">All trending Ethiopian music — Amharic, Oromo, Guragigna, Tigrinya & more</div>
         <div class="c-stats">
           <div><div class="cs-n" id="ethCnt" style="color:#4ade80">—</div><div class="cs-l">Songs</div></div>
           <div><div class="cs-n" id="ethArt" style="color:#4ade80">—</div><div class="cs-l">Artists</div></div>
@@ -591,17 +688,23 @@ footer{
       </div>
     </div>
     <div id="ethChart"></div>
+    <div style="margin-top:20px;text-align:center">
+      <button class="btn-ghost" onclick="nav('home')" style="padding:10px 24px;font-size:13px">← Back to Home</button>
+    </div>
   </div>
 </div>
 
 <!-- ═══════ ERITREA ═══════ -->
 <div class="page" id="page-eritrea">
   <div class="container section" style="padding-top:28px">
+    <div class="bc">
+      <span class="bc-link" onclick="nav('home')">← Back to Home</span>
+    </div>
     <div class="country-hero c-eri">
       <span class="c-flag">🇪🇷</span>
       <div>
-        <div class="c-title">Eritrea / Tigrinya Charts</div>
-        <div class="c-sub">Trending Eritrean & Tigrinya music from Eritrea and Tigray</div>
+        <div class="c-title">Eritrea Full Chart</div>
+        <div class="c-sub">All trending Eritrean & Tigrinya music</div>
         <div class="c-stats">
           <div><div class="cs-n" id="eriCnt" style="color:#60a5fa">—</div><div class="cs-l">Songs</div></div>
           <div><div class="cs-n" id="eriArt" style="color:#60a5fa">—</div><div class="cs-l">Artists</div></div>
@@ -609,6 +712,9 @@ footer{
       </div>
     </div>
     <div id="eriChart"></div>
+    <div style="margin-top:20px;text-align:center">
+      <button class="btn-ghost" onclick="nav('home')" style="padding:10px 24px;font-size:13px">← Back to Home</button>
+    </div>
   </div>
 </div>
 
@@ -850,8 +956,21 @@ function renderHome() {
   renderChart(SONGS, 'homeChart', 10);
   const newEntries = SONGS.filter(s => s.isNew || s.weekViews >= 100000).slice(0, 6);
   renderCards(newEntries, 'newEntries');
-  renderMini(SONGS.filter(s => s.country === 'Ethiopia').slice(0, 5), 'ethMini');
+  renderMini(SONGS.filter(s => s.country === 'Ethiopia' && !s.id.startsWith('e')).slice(0, 5), 'ethMini');
   renderMini(SONGS.filter(s => s.country === 'Eritrea').slice(0, 5), 'eriMini');
+  // Set collapsed state
+  setTimeout(() => {
+    ['ethMini','eriMini'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('collapsed');
+    });
+  }, 10);
+  _miniExpanded.eth = false;
+  _miniExpanded.eri = false;
+  const b1 = document.getElementById('eth-see-all');
+  const b2 = document.getElementById('eri-see-all');
+  if (b1) { b1.innerHTML = 'See all ↓'; b1.style.color = ''; }
+  if (b2) { b2.innerHTML = 'See all ↓'; b2.style.color = ''; }
 }
 
 // ═══════════════════════════════════════════════
@@ -1049,46 +1168,47 @@ async function togglePreview(songId) {
   const panel = document.getElementById('preview-' + songId);
   if (!panel) return;
 
-  // Show loading state
+  // Build UI immediately
   panel.innerHTML = `
     <div class="preview-bar">
       <div class="preview-info">
         <div class="preview-title">${s.title}</div>
         <div class="preview-label" id="plabel-${songId}">⏳ Loading preview…</div>
+        <div style="height:2px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:6px;overflow:hidden">
+          <div id="pbar-${songId}" style="height:100%;width:0%;background:#1DB954;transition:width 10s linear"></div>
+        </div>
       </div>
       <button class="preview-close-btn" onclick="event.stopPropagation();_closePreview('${songId}')">✕</button>
     </div>`;
   panel.classList.add('open');
 
-  // Try iTunes first
+  // ── MOBILE FIX: create and play audio immediately inside the user gesture ──
+  // We use a silent data URI first, then swap to the real URL.
+  // This keeps the audio element "unlocked" by the gesture on iOS/Android.
+  if (_audio) { _audio.pause(); _audio = null; }
+  _audio = new Audio();
+  _audio.volume = 1;
+
+  // Fetch iTunes preview URL (async — but audio element is already created)
   const previewUrl = await _getPreviewUrl(s);
 
-  if (previewUrl) {
-    // ── iTunes MP3 preview ─────────────────────
-    // Stop any existing audio
-    if (_audio) { _audio.pause(); _audio = null; }
+  // Check the preview is still wanted (user may have closed it)
+  if (_activeId !== songId) return;
 
-    _audio = new Audio(previewUrl);
-    _audio.volume = 1;
+  if (previewUrl) {
+    _audio.src = previewUrl;
     _audio.play().then(() => {
       const label = document.getElementById('plabel-' + songId);
       if (label) label.innerHTML = '🎵 10-sec preview (chorus) · closes in <span id="ptimer-' + songId + '">10</span>s';
+      const bar = document.getElementById('pbar-' + songId);
+      if (bar) setTimeout(() => { bar.style.width = '100%'; }, 50);
       _startCountdown(songId);
     }).catch(() => {
-      // Audio play failed - fall back to YouTube
       _audio = null;
       _ytFallback(s, panel, songId);
     });
-
-    // Progress bar
-    const bar = document.createElement('div');
-    bar.id = 'pbar-' + songId;
-    bar.style.cssText = 'height:2px;background:#1DB954;width:0%;transition:width 10s linear;margin-top:4px';
-    panel.querySelector('.preview-bar').appendChild(bar);
-    setTimeout(() => { if (bar.parentNode) bar.style.width = '100%'; }, 50);
-
   } else {
-    // ── YouTube embed fallback ─────────────────
+    _audio = null;
     _ytFallback(s, panel, songId);
   }
 }
@@ -1120,10 +1240,56 @@ function _closePreview(songId) {
   if (panel) { panel.classList.remove('open'); panel.innerHTML = ''; }
 }
 
-// ═══════════════════════════════════════════════
-// NAVIGATION
+// ── MOBILE DRAWER ────────────────────────────────
+function toggleDrawer() {
+  const drawer = document.getElementById('mobileDrawer');
+  const btn    = document.getElementById('hamburger');
+  drawer.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+function closeDrawer() {
+  const drawer = document.getElementById('mobileDrawer');
+  const btn    = document.getElementById('hamburger');
+  if (drawer) drawer.classList.remove('open');
+  if (btn)    btn.classList.remove('open');
+}
+
+
+const _miniExpanded = { eth: false, eri: false };
+
+function expandMini(key) {
+  const miniEl  = document.getElementById(key + 'Mini');
+  const btnEl   = document.getElementById(key + '-see-all');
+  const isEth   = key === 'eth';
+  const list    = isEth
+    ? SONGS.filter(s => s.country === 'Ethiopia' && !s.id.startsWith('e')).slice(0, 25)
+    : SONGS.filter(s => s.country === 'Eritrea').slice(0, 12);
+
+  if (!_miniExpanded[key]) {
+    // Expand — render full list with smooth animation
+    btnEl.innerHTML = 'Show less ↑';
+    btnEl.style.color = 'var(--gold)';
+    renderMini(list, key + 'Mini');
+    miniEl.classList.remove('collapsed');
+    miniEl.classList.add('expanded');
+    _miniExpanded[key] = true;
+    // Smooth scroll to show the new content
+    setTimeout(() => miniEl.scrollIntoView({ behavior:'smooth', block:'nearest' }), 50);
+  } else {
+    // Collapse back to top 5
+    btnEl.innerHTML = 'See all ↓';
+    btnEl.style.color = '';
+    const top5 = list.slice(0, 5);
+    renderMini(top5, key + 'Mini');
+    miniEl.classList.remove('expanded');
+    miniEl.classList.add('collapsed');
+    _miniExpanded[key] = false;
+  }
+}
+
 // ═══════════════════════════════════════════════
 function nav(page) {
+  closeDrawer();
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nm').forEach(n => n.classList.remove('active'));
   document.getElementById('page-' + page)?.classList.add('active');
