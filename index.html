@@ -834,12 +834,12 @@ nav{top:var(--tk);left:0;right:0}
       The dedicated real-time charts platform for Ethiopian and Eritrean music. We aggregate view data from multiple chart sources to show exactly what the Habesha community is listening to right now — updated weekly every Thursday.
     </p>
     <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:12px">
-      <h3 style="font-size:13px;font-weight:700;color:#fff;margin-bottom:13px">Data Sources</h3>
+      <h3 style="font-size:13px;font-weight:700;color:#fff;margin-bottom:13px">How It Works</h3>
       <div style="display:flex;flex-direction:column;gap:10px">
-        <div style="display:flex;gap:10px"><span style="color:var(--amber);font-size:11px;width:18px;flex-shrink:0;font-weight:700">📊</span><div><div style="font-size:12px;font-weight:600;color:#ccc;margin-bottom:2px">Weekly Music Charts</div><div style="font-size:11px;color:var(--muted);line-height:1.5">Ethiopian music YouTube chart ranked by weekly view velocity. Updated every Thursday.</div></div></div>
-        <div style="display:flex;gap:10px"><span style="color:var(--amber);font-size:11px;width:18px;flex-shrink:0;font-weight:700">📈</span><div><div style="font-size:12px;font-weight:600;color:#ccc;margin-bottom:2px">YouTube Daily Charts</div><div style="font-size:11px;color:var(--muted);line-height:1.5">Real-time YouTube trending chart for the ET region, updated daily.</div></div></div>
-        <div style="display:flex;gap:10px"><span style="color:var(--amber);font-size:11px;width:18px;flex-shrink:0;font-weight:700">🎵</span><div><div style="font-size:12px;font-weight:600;color:#ccc;margin-bottom:2px">Regional Music Charts</div><div style="font-size:11px;color:var(--muted);line-height:1.5">Weekly Tigrinya chart covering Ethiopia & Eritrea — tracks crossover hits from both countries.</div></div></div>
-        <div style="display:flex;gap:10px"><span style="color:var(--amber);font-size:11px;width:18px;flex-shrink:0;font-weight:700">🌍</span><div><div style="font-size:12px;font-weight:600;color:#ccc;margin-bottom:2px">Streaming Aggregator</div><div style="font-size:11px;color:var(--muted);line-height:1.5">Weekly chart aggregator covering the Ethiopian region across major streaming platforms.</div></div></div>
+        <div style="display:flex;gap:10px"><span style="color:var(--amber);font-size:11px;width:18px;flex-shrink:0;font-weight:700">📊</span><div><div style="font-size:12px;font-weight:600;color:#ccc;margin-bottom:2px">Weekly Charts</div><div style="font-size:11px;color:var(--muted);line-height:1.5">Songs are ranked by view velocity — how many new views a song gained that week.</div></div></div>
+        <div style="display:flex;gap:10px"><span style="color:var(--amber);font-size:11px;width:18px;flex-shrink:0;font-weight:700">🎵</span><div><div style="font-size:12px;font-weight:600;color:#ccc;margin-bottom:2px">Music Previews</div><div style="font-size:11px;color:var(--muted);line-height:1.5">Tap any song thumbnail to hear a 10-second preview from the best part of the song.</div></div></div>
+        <div style="display:flex;gap:10px"><span style="color:var(--amber);font-size:11px;width:18px;flex-shrink:0;font-weight:700">🗓️</span><div><div style="font-size:12px;font-weight:600;color:#ccc;margin-bottom:2px">Update Schedule</div><div style="font-size:11px;color:var(--muted);line-height:1.5">Charts are updated every Thursday with the latest rankings.</div></div></div>
+        <div style="display:flex;gap:10px"><span style="color:var(--amber);font-size:11px;width:18px;flex-shrink:0;font-weight:700">🌍</span><div><div style="font-size:12px;font-weight:600;color:#ccc;margin-bottom:2px">Coverage</div><div style="font-size:11px;color:var(--muted);line-height:1.5">Covers Ethiopian and Eritrean music across all languages and regions including diaspora artists.</div></div></div>
       </div>
     </div>
     <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px">
@@ -862,12 +862,12 @@ nav{top:var(--tk);left:0;right:0}
 
 // ═══════════════════════════════════════════════════
 // REAL DATA — sourced Apr 21 2026
-// YouTube: YouTube Daily Charts Chart
+// ── Weekly Chart data — updated every Thursday
 // Spotify: Best Ethiopian Music 2026 playlist (15.3K saves)
 //          + direct Spotify track searches
 // ═══════════════════════════════════════════════════
 const SONGS = [
-  { id:'1',  rank:1,  prev:1,  isNew:false, title:'Das Tal (Ansaw) – ዳስ ጣል',              artist:'Teddy Afro', country:'Ethiopia', lang:'Amharic',  genre:'Afropop',      views:9100000,  weekViews:9100000,  year:2026, ytId:'ADc9JPeLYi4',  thumbUrl:'https://i.ytimg.com/vi/ADc9JPeLYi4/maxresdefault.jpg',  spotifyId:'1UtV70tciiIMGk2b4l8TXv', reason:'#1 on YeneVibe Apr 24 — Etorika Track 1. Trending #1 in UAE, Saudi, Norway, Sweden & more.', score:99 },
+  { id:'1',  rank:1,  prev:1,  isNew:false, title:'Das Tal (Ansaw) – ዳስ ጣል',              artist:'Teddy Afro', country:'Ethiopia', lang:'Amharic',  genre:'Afropop',      views:9100000,  weekViews:9100000,  year:2026, ytId:'ADc9JPeLYi4',  thumbUrl:'https://i.ytimg.com/vi/ADc9JPeLYi4/maxresdefault.jpg',  spotifyId:'1UtV70tciiIMGk2b4l8TXv', reason:'Etorika Track 1. Trending #1 in UAE, Saudi, Norway, Sweden & more.', score:99 },
   { id:'2',  rank:2,  prev:2,  isNew:false, title:'Sememene (GuReggae) – ስምምነን',           artist:'Teddy Afro', country:'Ethiopia', lang:'Amharic',  genre:'Afropop',      views:7334776,  weekViews:5226316,  year:2026, ytId:'nw443G62EQc',  thumbUrl:'https://i.ytimg.com/vi/nw443G62EQc/maxresdefault.jpg',  spotifyId:'1Fb3ueLohCnOzUQE24gJGv',                       reason:'#2 this week — Etorika Track 5 (Gurage-Reggae fusion). 7.3M total views.', score:97 },
   { id:'3',  rank:3,  prev:3,  isNew:false, title:'Shih Bibal (Back to 90s) – ሺ ቢባል',     artist:'Teddy Afro', country:'Ethiopia', lang:'Amharic',  genre:'Afropop',      views:6219691,  weekViews:4555267,  year:2026, ytId:'UlqLeuVHpEU',  thumbUrl:'https://i.ytimg.com/vi/UlqLeuVHpEU/maxresdefault.jpg',  spotifyId:'24HI7QnQdANExXzERYFG5X', reason:'#3 this week — Etorika Track 9. 6.2M views. Nostalgic 90s throwback.', score:95 },
   { id:'4',  rank:4,  prev:4,  isNew:false, title:'Jember – ጀምበር',                         artist:'Teddy Afro', country:'Ethiopia', lang:'Amharic',  genre:'Afropop',      views:7263404,  weekViews:3984209,  year:2026, ytId:'PA2aWF37Ljk',  thumbUrl:'https://i.ytimg.com/vi/PA2aWF37Ljk/maxresdefault.jpg',  spotifyId:'1NB4UkzI7nwqjnEtKwoMey', reason:'Etorika Track 18 — hit 1M views in 3 hours on release. Record for Ethiopian music.', score:94 },
@@ -929,7 +929,7 @@ let topN = 10;
 // ═══════════════════════════════════════════════
 // weekly updates
 function showRefreshInfo() {
-  alert('Charts refresh every 30 minutes from YeneVibe, kworb.net, and Regional Music Charts. Reload the page anytime to fetch the latest data.');
+  alert('Charts update every Thursday. Reload the page to see the latest data.');
 }
 
 // ═══════════════════════════════════════════════
@@ -1707,5 +1707,18 @@ renderHome();
 renderEthnicPreview();
 
 </script>
+<!-- ═══════ EMAIL MODAL ═══════ -->
+<div id="emailModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px">
+  <div style="background:#1a1609;border:0.5px solid rgba(251,191,36,.25);border-radius:16px;padding:32px 28px;max-width:380px;width:100%;position:relative;text-align:center">
+    <button onclick="closeEmailModal()" style="position:absolute;top:12px;right:12px;background:rgba(255,255,255,.06);border:none;color:#666;width:28px;height:28px;border-radius:50%;font-size:15px;cursor:pointer;line-height:1">✕</button>
+    <div style="font-size:32px;margin-bottom:12px">🎵</div>
+    <div style="font-size:17px;font-weight:800;color:#f5f0e8;margin-bottom:6px">Get Weekly Habesha Charts</div>
+    <div style="font-size:12px;color:#555;margin-bottom:20px;line-height:1.6">Top trending Ethiopian &amp; Eritrean songs every Thursday.</div>
+    <input id="modalEmail" type="email" placeholder="your@email.com" style="width:100%;background:rgba(255,255,255,.06);border:0.5px solid rgba(251,191,36,.2);border-radius:8px;padding:11px 14px;color:#f5f0e8;font-size:13px;font-family:Inter,sans-serif;outline:none;margin-bottom:10px;box-sizing:border-box">
+    <button onclick="subscribeModal()" style="width:100%;background:#fbbf24;color:#000;font-weight:700;font-size:13px;padding:11px;border-radius:8px;border:none;cursor:pointer;margin-bottom:10px">Subscribe →</button>
+    <button onclick="closeEmailModal()" style="background:none;border:none;color:#555;font-size:11px;cursor:pointer;text-decoration:underline">No thanks, skip</button>
+  </div>
+</div>
+
 </body>
 </html>
