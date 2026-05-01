@@ -1438,7 +1438,11 @@ function togglePreview(songId) {
       const bar = document.getElementById('pbar-' + songId);
       if (bar) setTimeout(() => { bar.style.width = '100%'; }, 50);
       _startCountdown(songId);
-    }).catch(() => {
+    }).catch((err) => {
+      // STEP 1: Log real error so we can see it
+      console.error('[HT Preview] play() failed:', err.name, err.message);
+      const label = document.getElementById('plabel-' + songId);
+      if (label) label.innerHTML = '⚠️ ' + err.name + ': ' + err.message;
       _audio = null;
       _ytFallback(s, panel, songId);
     });
@@ -1836,6 +1840,21 @@ try {
   }
 } catch(e) {}
 
+
+
+// ── STEP 3 & 4: Minimal 10-line test ──────────────
+// Call testPlay() from browser console to isolate the issue
+function testPlay() {
+  const a = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+  a.volume = 1;
+  a.play()
+    .then(() => console.log('[HT] ✓ Hardcoded MP3 plays fine'))
+    .catch(e => console.error('[HT] ✗ Even hardcoded MP3 blocked:', e.name, e.message));
+}
+// Auto-test on page load to confirm file loads
+fetch('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', {method:'HEAD'})
+  .then(r => console.log('[HT] Network check: MP3 reachable, status', r.status))
+  .catch(e => console.error('[HT] Network check: MP3 unreachable', e.message));
 
 // ── BORDER TICKER ────────────────────────────────
 function initTicker() {
