@@ -1823,22 +1823,72 @@ function toggleEthnic(id) {
 }
 
 
-// ── EMAIL MODAL ─────────────────────────────────
+// ── EMAIL / EXIT MODAL ──────────────────────────
+function openEmailModal(isExit) {
+  const modal = document.getElementById('emailModal');
+  if (!modal) return;
+  if (isExit) {
+    document.getElementById('modalTitle').textContent = 'Before you go...';
+    document.getElementById('modalSub').textContent = 'Subscribe for free weekly Habesha chart updates. And — how would you rate this site?';
+    document.getElementById('starRating').style.display = 'block';
+  } else {
+    document.getElementById('modalTitle').textContent = 'Get Weekly Habesha Charts';
+    document.getElementById('modalSub').innerHTML = 'Top trending Ethiopian &amp; Eritrean songs delivered to your inbox every week. Free, no spam.';
+    document.getElementById('starRating').style.display = 'none';
+  }
+  modal.style.display = 'flex';
+}
+
 function closeEmailModal() {
   document.getElementById('emailModal').style.display = 'none';
-  try { localStorage.setItem('ht_subscribed','1'); } catch(e) {}
+  try { localStorage.setItem('ht_shown', Date.now()); } catch(e) {}
 }
+
 function subscribeModal() {
   const v = document.getElementById('modalEmail').value.trim();
-  if (!v || !v.includes('@')) { alert('Please enter a valid email.'); return; }
-  alert('Subscribed! You will receive weekly charts every Thursday.');
-  closeEmailModal();
-}
-try {
-  if (!localStorage.getItem('ht_subscribed')) {
-    setTimeout(() => { document.getElementById('emailModal').style.display = 'flex'; }, 3000);
+  if (!v || !v.includes('@')) {
+    alert('Please enter a valid email address.');
+    return false;
   }
-} catch(e) {}
+  closeEmailModal();
+  return true;
+}
+
+// Star rating
+function highlightStars(n) {
+  const stars = document.querySelectorAll('#stars span');
+  stars.forEach((s,i) => { s.textContent = i < n ? '★' : '☆'; s.style.color = i < n ? '#fbbf24' : '#555'; });
+}
+function resetStars() {
+  document.querySelectorAll('#stars span').forEach(s => { s.textContent = '☆'; s.style.color = ''; });
+}
+function rateSite(n) {
+  highlightStars(n);
+  setTimeout(() => {
+    document.getElementById('starRating').innerHTML =
+      `<div style="font-size:13px;color:#4ade80;font-weight:600">Thanks for the ${n}-star rating! ⭐</div>`;
+  }, 300);
+}
+
+// Show popup immediately on first visit
+try {
+  const lastShown = localStorage.getItem('ht_shown');
+  const oneDayAgo = Date.now() - 86400000;
+  if (!lastShown || parseInt(lastShown) < oneDayAgo) {
+    // Show immediately on page load
+    openEmailModal(false);
+  }
+} catch(e) { openEmailModal(false); }
+
+// Exit intent — desktop: mouse leaves top of page
+document.addEventListener('mouseleave', function(e) {
+  if (e.clientY <= 5) {
+    const modal = document.getElementById('emailModal');
+    if (modal && modal.style.display === 'none') {
+      openEmailModal(true);
+    }
+  }
+});
 
 
 
@@ -1908,16 +1958,42 @@ renderEthnicPreview();
 _prefetchPreviews();
 
 </script>
-<!-- ═══════ EMAIL MODAL ═══════ -->
-<div id="emailModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px">
-  <div style="background:#1a1609;border:0.5px solid rgba(251,191,36,.25);border-radius:16px;padding:32px 28px;max-width:380px;width:100%;position:relative;text-align:center">
+<!-- ═══════ EMAIL / EXIT MODAL ═══════ -->
+<div id="emailModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.82);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:20px">
+  <div style="background:#1a1609;border:0.5px solid rgba(251,191,36,.3);border-radius:18px;padding:32px 28px;max-width:400px;width:100%;position:relative;text-align:center">
     <button onclick="closeEmailModal()" style="position:absolute;top:12px;right:12px;background:rgba(255,255,255,.06);border:none;color:#666;width:28px;height:28px;border-radius:50%;font-size:15px;cursor:pointer;line-height:1">✕</button>
-    <div style="font-size:32px;margin-bottom:12px">🎵</div>
-    <div style="font-size:17px;font-weight:800;color:#f5f0e8;margin-bottom:6px">Get Weekly Habesha Charts</div>
-    <div style="font-size:12px;color:#555;margin-bottom:20px;line-height:1.6">Top trending Ethiopian &amp; Eritrean songs every Thursday.</div>
-    <input id="modalEmail" type="email" placeholder="your@email.com" style="width:100%;background:rgba(255,255,255,.06);border:0.5px solid rgba(251,191,36,.2);border-radius:8px;padding:11px 14px;color:#f5f0e8;font-size:13px;font-family:Inter,sans-serif;outline:none;margin-bottom:10px;box-sizing:border-box">
-    <button onclick="subscribeModal()" style="width:100%;background:#fbbf24;color:#000;font-weight:700;font-size:13px;padding:11px;border-radius:8px;border:none;cursor:pointer;margin-bottom:10px">Subscribe →</button>
-    <button onclick="closeEmailModal()" style="background:none;border:none;color:#555;font-size:11px;cursor:pointer;text-decoration:underline">No thanks, skip</button>
+
+    <!-- icon -->
+    <div style="width:56px;height:56px;border-radius:14px;background:rgba(251,191,36,.12);border:0.5px solid rgba(251,191,36,.25);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 14px">🎵</div>
+
+    <!-- title -->
+    <div style="font-size:18px;font-weight:800;color:#f5f0e8;margin-bottom:6px" id="modalTitle">Get Weekly Habesha Charts</div>
+    <div style="font-size:12px;color:#666;margin-bottom:20px;line-height:1.65" id="modalSub">Top trending Ethiopian &amp; Eritrean songs delivered to your inbox every week. Free, no spam.</div>
+
+    <!-- star rating (shows on exit intent) -->
+    <div id="starRating" style="display:none;margin-bottom:18px">
+      <div style="font-size:12px;color:#aaa;margin-bottom:10px">How would you rate this website?</div>
+      <div style="display:flex;justify-content:center;gap:8px" id="stars">
+        <span onclick="rateSite(1)" style="font-size:28px;cursor:pointer;transition:transform .1s" onmouseover="highlightStars(1)" onmouseout="resetStars()">☆</span>
+        <span onclick="rateSite(2)" style="font-size:28px;cursor:pointer;transition:transform .1s" onmouseover="highlightStars(2)" onmouseout="resetStars()">☆</span>
+        <span onclick="rateSite(3)" style="font-size:28px;cursor:pointer;transition:transform .1s" onmouseover="highlightStars(3)" onmouseout="resetStars()">☆</span>
+        <span onclick="rateSite(4)" style="font-size:28px;cursor:pointer;transition:transform .1s" onmouseover="highlightStars(4)" onmouseout="resetStars()">☆</span>
+        <span onclick="rateSite(5)" style="font-size:28px;cursor:pointer;transition:transform .1s" onmouseover="highlightStars(5)" onmouseout="resetStars()">☆</span>
+      </div>
+    </div>
+
+    <!-- email input -->
+    <input id="modalEmail" type="email" placeholder="your@email.com"
+      style="width:100%;background:rgba(255,255,255,.06);border:0.5px solid rgba(251,191,36,.25);border-radius:8px;padding:12px 14px;color:#f5f0e8;font-size:13px;font-family:Inter,sans-serif;outline:none;margin-bottom:10px;box-sizing:border-box">
+
+    <!-- subscribe button — links to Substack -->
+    <a id="subscribeBtn" href="https://nati473675.substack.com" target="_blank" rel="noopener"
+      onclick="subscribeModal()"
+      style="display:block;width:100%;background:#fbbf24;color:#000;font-weight:700;font-size:13px;padding:12px;border-radius:8px;text-decoration:none;margin-bottom:10px;box-sizing:border-box">
+      Subscribe — It's Free →
+    </a>
+
+    <button onclick="closeEmailModal()" style="background:none;border:none;color:#444;font-size:11px;cursor:pointer;text-decoration:underline">No thanks, skip</button>
   </div>
 </div>
 
