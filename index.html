@@ -555,21 +555,21 @@ footer{
 @keyframes tkD{from{transform:translateY(0)}to{transform:translateY(-50%)}}
 @keyframes tkU{from{transform:translateY(-50%)}to{transform:translateY(0)}}
 
-/* push page content inward so ticker doesn't cover it */
-body{padding:var(--tk) var(--tk) var(--tk) var(--tk)}
-nav{top:var(--tk);left:var(--tk);right:var(--tk)}
-.mobile-drawer{top:calc(var(--tk) + 52px);left:var(--tk);right:var(--tk)}
-.bottom-tabs{bottom:var(--tk);left:var(--tk);right:var(--tk)}
+.ticker-left,.ticker-right{display:none}
+/* push page content inward — top and bottom only */
+body{padding:var(--tk) 0}
+nav{top:var(--tk);left:0;right:0}
+.mobile-drawer{top:calc(var(--tk) + 52px);left:0;right:0}
+.bottom-tabs{bottom:var(--tk);left:0;right:0}
 
-/* hide vertical tickers on mobile — too cramped */
+/* hide vertical tickers — top and bottom only */
 @media(max-width:820px){
   :root{--tk:20px}
-  body{padding:var(--tk) var(--tk) var(--tk) var(--tk)}
-  nav{left:var(--tk);right:var(--tk)}
-  .mobile-drawer{left:var(--tk);right:var(--tk)}
-  .bottom-tabs{left:var(--tk);right:var(--tk)}
-  .tk-item-h,.tk-item-v{font-size:9px;padding:0 8px}
-  .tk-item-v{padding:4px 0}
+  body{padding:var(--tk) 0}
+  nav{left:0;right:0}
+  .mobile-drawer{left:0;right:0}
+  .bottom-tabs{left:0;right:0}
+  .tk-item-h{font-size:9px;padding:0 8px}
 }
 </style>
 </head>
@@ -1693,8 +1693,8 @@ function initTicker() {
     el.style.animation = `${animName} ${speed}s linear infinite`;
   }
 
-  build('tk-top', 'h', 'tkL', 30);
-  build('tk-bot', 'h', 'tkR', 30);
+  build('tk-top', 'h', 'tkL', 55);
+  build('tk-bot', 'h', 'tkR', 55);
   build('tk-lft', 'v', 'tkD', 24);
   build('tk-rgt', 'v', 'tkU', 24);
 }
