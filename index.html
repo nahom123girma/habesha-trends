@@ -1854,10 +1854,38 @@ function subscribeModal() {
     alert('Please enter a valid email address.');
     return false;
   }
-  // Mark as subscribed — popup will never show again
-  try { localStorage.setItem('ht_subscribed', '1'); } catch(e) {}
-  closeEmailModal();
-  return true;
+
+  const btn = document.getElementById('subscribeBtn');
+  btn.textContent = 'Subscribing...';
+  btn.disabled = true;
+
+  // Submit to Formspree — user stays on site
+  fetch('https://formspree.io/f/xdabkeqv', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({ email: v, source: 'Habesha Trends' })
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.ok || data.next) {
+      // Success
+      btn.style.display = 'none';
+      document.getElementById('modalEmail').style.display = 'none';
+      document.getElementById('subscribeMsg').style.display = 'block';
+      try { localStorage.setItem('ht_subscribed', '1'); } catch(e) {}
+      setTimeout(() => closeEmailModal(), 2500);
+    } else {
+      btn.textContent = 'Subscribe — It’s Free →';
+      btn.disabled = false;
+      alert('Something went wrong. Please try again.');
+    }
+  })
+  .catch(() => {
+    btn.textContent = 'Subscribe — It’s Free →';
+    btn.disabled = false;
+    alert('Connection error. Please check your internet and try again.');
+  });
+  return false;
 }
 
 // Star rating
@@ -1979,12 +2007,12 @@ _prefetchPreviews();
     <input id="modalEmail" type="email" placeholder="your@email.com"
       style="width:100%;background:rgba(255,255,255,.06);border:0.5px solid rgba(251,191,36,.25);border-radius:8px;padding:12px 14px;color:#f5f0e8;font-size:13px;font-family:Inter,sans-serif;outline:none;margin-bottom:10px;box-sizing:border-box">
 
-    <!-- subscribe button — links to Substack -->
-    <a id="subscribeBtn" href="https://nati473675.substack.com" target="_blank" rel="noopener"
-      onclick="subscribeModal()"
-      style="display:block;width:100%;background:#fbbf24;color:#000;font-weight:700;font-size:13px;padding:12px;border-radius:8px;text-decoration:none;margin-bottom:10px;box-sizing:border-box">
+    <!-- subscribe button — submits via Formspree, stays on site -->
+    <button id="subscribeBtn" onclick="subscribeModal()"
+      style="display:block;width:100%;background:#fbbf24;color:#000;font-weight:700;font-size:13px;padding:12px;border-radius:8px;border:none;cursor:pointer;margin-bottom:10px;box-sizing:border-box">
       Subscribe — It's Free →
-    </a>
+    </button>
+    <div id="subscribeMsg" style="display:none;font-size:12px;color:#4ade80;text-align:center;margin-bottom:10px">✅ You're subscribed! Charts delivered every Thursday.</div>
 
     <button onclick="closeEmailModalSkip()" style="background:none;border:none;color:#444;font-size:11px;cursor:pointer;text-decoration:underline">No thanks, skip</button>
   </div>
