@@ -147,9 +147,7 @@ h1.hero-title .accent{color:var(--amber)}
 .chart-row{
   display:flex;align-items:center;gap:12px;
   padding:10px 14px;
-  cursor:pointer;transition:background .13s;
 }
-.chart-row:hover{background:rgba(251,191,36,.03)}
 .spotify-popover{display:none;padding:0 14px 12px 14px}
 .spotify-popover.open{display:block}
 
@@ -167,6 +165,7 @@ h1.hero-title .accent{color:var(--amber)}
   position:relative;width:52px;height:52px;flex-shrink:0;
   cursor:pointer;border-radius:8px;overflow:hidden;
   background:var(--elevated);border:0.5px solid rgba(251,191,36,.08);
+  -webkit-tap-highlight-color:rgba(251,191,36,.2);
 }
 .si-art img,.si-img{width:100%;height:100%;object-fit:cover;display:block;border-radius:8px}
 .si-art .si-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(251,191,36,.05)}
@@ -175,9 +174,10 @@ h1.hero-title .accent{color:var(--amber)}
   background:rgba(0,0,0,.5);
   display:flex;align-items:center;justify-content:center;
   opacity:0;transition:opacity .15s;
+  pointer-events:none;
 }
 .si-art:hover .si-play-btn{opacity:1}
-@media(hover:none){.si-play-btn{opacity:.4}.si-art:active .si-play-btn{opacity:1}}
+@media(hover:none){.si-play-btn{opacity:.45}.si-art:active .si-play-btn{opacity:1}}
 .si-play-btn svg{width:18px;height:18px;fill:#fff}
 .si-spotify-badge{
   position:absolute;bottom:2px;right:2px;
@@ -1077,23 +1077,23 @@ function renderChart(list, cid, limit) {
         const spotifySvg = `<svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>`;
         return `
           <div class="chart-item" id="item-${s.id}">
-            <div class="chart-row" onclick="showSong('${s.id}')">
-              <div class="rk">
+            <div class="chart-row">
+              <div class="rk" onclick="showSong('${s.id}')">
                 <div class="rk-n ${s.rank===1?'g':s.rank<=3?'s':''}">${s.rank}</div>
                 ${mv}
               </div>
-              <div class="si-art" onclick="event.stopPropagation();togglePreview('${s.id}')">
+              <div class="si-art" ontouchstart="" onclick="togglePreview('${s.id}')">
                 ${thumb ? `<img class="si-img" data-ytid="${s.ytId}" src="${thumb||''}" alt="${s.title}" width="52" height="52" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ''}
                 <div class="si-ph" id="ph-${s.id}" ${thumb?'style="display:none"':''}>🎵</div>
                 <div class="si-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
                 ${s.spotifyId ? `<div class="si-spotify-badge">${spotifySvg}</div>` : ''}
               </div>
-              <div class="si-info">
+              <div class="si-info" onclick="showSong('${s.id}')" style="cursor:pointer">
                 <div class="si-title">${s.title}</div>
                 <div class="si-artist">${s.artist}</div>
                 <div class="si-views">${views}</div>
               </div>
-              <div class="si-right">
+              <div class="si-right" onclick="showSong('${s.id}')" style="cursor:pointer">
                 <span class="ctag ${ctag(s.country)}">${flag(s.country)} ${s.country}</span>
                 <span class="score-pill">${s.score}</span>
               </div>
