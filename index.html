@@ -1352,44 +1352,43 @@ function showSong(id) {
 }
 
 // ═══════════════════════════════════════════════
-// ═══════════════════════════════════════════════
 // PREVIEW ENGINE
-// Uses iTunes Search API to get a real 30-sec MP3
-// preview_url starting at the chorus/best part.
-// Plays with HTML5 <audio>, stops after 10 seconds.
+// iTunes URLs are pre-fetched silently on page load.
+// On tap: play() called synchronously — no await,
+// so gesture context stays intact on iOS/Android.
 // Falls back to YouTube embed if iTunes has nothing.
 // ═══════════════════════════════════════════════
-let _activeId   = null;
-let _audio      = null;
-let _timer      = null;
 const _previewCache = {};
+let _activeId = null;
+let _audio    = null;
+let _timer    = null;
 
-// Approximate chorus start (seconds) for YouTube fallback
 const CHORUS_START = {
   '10':47,'20':32,'22':28,'23':38,'24':35,'25':30,
   'e1':42,'e3':40,'e5':35,'e6':32,'e7':45,
   'e8':38,'e9':36,'e10':40,'e11':44,'e12':38
 };
 
-async function _getPreviewUrl(song) {
-  const key = song.id;
-  if (_previewCache[key] !== undefined) return _previewCache[key];
-  try {
-    // Strip non-ASCII (Amharic) for iTunes search
-    const clean = s => s.replace(/[^\u0000-\u007F]/g,'').trim();
-    const term  = encodeURIComponent(clean(song.artist) + ' ' + clean(song.title));
-    if (!term || term.length < 3) { _previewCache[key] = null; return null; }
-    const res  = await fetch(`https://itunes.apple.com/search?term=${term}&media=music&entity=song&limit=3`);
-    const data = await res.json();
-    if (data.results && data.results.length > 0) {
-      // Pick the result with a previewUrl
-      const hit = data.results.find(r => r.previewUrl) || data.results[0];
-      _previewCache[key] = hit.previewUrl || null;
-      return _previewCache[key];
-    }
-  } catch(e) {}
-  _previewCache[key] = null;
-  return null;
+// Pre-fetch all iTunes preview URLs silently in background
+async function _prefetchPreviews() {
+  const clean = str => str.replace(/[^\u0000-\u007F]/g,'').trim();
+  for (const s of SONGS) {
+    const key = s.id;
+    if (_previewCache[key] !== undefined) continue;
+    try {
+      const term = encodeURIComponent(clean(s.artist) + ' ' + clean(s.title));
+      if (!term || term.length < 3) { _previewCache[key] = null; continue; }
+      const res  = await fetch(`https://itunes.apple.com/search?term=${term}&media=music&entity=song&limit=3`);
+      const data = await res.json();
+      if (data.results && data.results.length > 0) {
+        const hit = data.results.find(r => r.previewUrl) || data.results[0];
+        _previewCache[key] = hit.previewUrl || null;
+      } else {
+        _previewCache[key] = null;
+      }
+    } catch(e) { _previewCache[key] = null; }
+    await new Promise(r => setTimeout(r, 150));
+  }
 }
 
 function _startCountdown(songId) {
@@ -1402,7 +1401,8 @@ function _startCountdown(songId) {
   }, 1000);
 }
 
-async function togglePreview(songId) {
+// Synchronous — no async/await here so iOS gesture context is preserved
+function togglePreview(songId) {
   const s = SONGS.find(x => x.id === songId);
   if (!s) return;
   if (_activeId === songId) { _closePreview(songId); return; }
@@ -1414,15 +1414,11 @@ async function togglePreview(songId) {
   const panel = document.getElementById('preview-' + songId);
   if (!panel) return;
 
-  // Detect mobile/touch device
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || ('ontouchstart' in window);
-
-  // Build UI immediately
   panel.innerHTML = `
     <div class="preview-bar">
       <div class="preview-info">
         <div class="preview-title">${s.title}</div>
-        <div class="preview-label" id="plabel-${songId}">⏳ Loading…</div>
+        <div class="preview-label">🎵 10-sec preview · closes in <span id="ptimer-${songId}">10</span>s</div>
         <div style="height:2px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:6px;overflow:hidden">
           <div id="pbar-${songId}" style="height:100%;width:0%;background:#fbbf24;transition:width 10s linear"></div>
         </div>
@@ -1431,26 +1427,14 @@ async function togglePreview(songId) {
     </div>`;
   panel.classList.add('open');
 
-  // ── ON MOBILE: skip iTunes fetch (async kills the gesture unlock on iOS)
-  // Go straight to YouTube embed which works reliably with autoplay on mobile
-  if (isMobile) {
-    _ytFallback(s, panel, songId);
-    return;
-  }
-
-  // ── ON DESKTOP: try iTunes MP3 preview first ──
-  if (_audio) { _audio.pause(); _audio = null; }
-  _audio = new Audio();
-  _audio.volume = 1;
-
-  const previewUrl = await _getPreviewUrl(s);
-  if (_activeId !== songId) return;
+  const previewUrl = _previewCache[s.id];
 
   if (previewUrl) {
-    _audio.src = previewUrl;
+    // URL already cached — play synchronously, no await
+    if (_audio) { _audio.pause(); _audio = null; }
+    _audio = new Audio(previewUrl);
+    _audio.volume = 1;
     _audio.play().then(() => {
-      const label = document.getElementById('plabel-' + songId);
-      if (label) label.innerHTML = '🎵 10-sec preview · closes in <span id="ptimer-' + songId + '">10</span>s';
       const bar = document.getElementById('pbar-' + songId);
       if (bar) setTimeout(() => { bar.style.width = '100%'; }, 50);
       _startCountdown(songId);
@@ -1459,24 +1443,46 @@ async function togglePreview(songId) {
       _ytFallback(s, panel, songId);
     });
   } else {
-    _audio = null;
+    // Not in cache yet or no iTunes preview — use YouTube
     _ytFallback(s, panel, songId);
   }
 }
 
 function _ytFallback(s, panel, songId) {
   const start = CHORUS_START[songId] || 30;
-  const label = document.getElementById('plabel-' + songId);
-  if (label) label.innerHTML = '▶ 10-sec preview · closes in <span id="ptimer-' + songId + '">10</span>s';
 
-  const ytDiv = document.createElement('div');
-  ytDiv.innerHTML = `<iframe
-    src="https://www.youtube.com/embed/${s.ytId}?autoplay=1&start=${start}&end=${start+10}&controls=0&modestbranding=1&rel=0&mute=0&playsinline=1"
-    width="100%" height="72" frameborder="0"
-    allow="autoplay; encrypted-media" allowfullscreen
-    style="border-radius:0 0 12px 12px;display:block">
-  </iframe>`;
-  panel.appendChild(ytDiv.firstElementChild);
+  // Songs from Nahom Records / labels that block YouTube embeds
+  const embedBlocked = ['ADc9JPeLYi4','nw443G62EQc','UlqLeuVHpEU','PA2aWF37Ljk',
+    'DsH_LxBB4l8','jaBZ9xXM2gU','BQSgYf4lfMg','IYf-RLJNMGU','FoBBYyvZCkc',
+    'pRHWe6Lz2mY','oEIySELAmqU','d1rAhwRJNyI','jvYGP-reKEI','sPYgRlfA-kc',
+    'FvHyBLvGJl0','UHNizap0GX4','Mg0Wu49V8Bw','NbYJmTUy1jg','e6vSKh9hiBU',
+    'jWSRjGB3JMU'];
+
+  if (embedBlocked.includes(s.ytId)) {
+    // Show a clean link — no broken embed
+    const ytUrl = `https://www.youtube.com/watch?v=${s.ytId}&t=${start}s`;
+    const div = document.createElement('div');
+    div.style.cssText = 'padding:12px 14px;background:rgba(255,255,255,.03);border-radius:0 0 10px 10px;display:flex;align-items:center;gap:12px';
+    div.innerHTML = `
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;color:#888;margin-bottom:6px">Preview not available for this song.</div>
+        <a href="${ytUrl}" target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:7px;background:#fbbf24;color:#000;font-size:12px;font-weight:700;padding:8px 16px;border-radius:6px;text-decoration:none">
+          ▶ Watch on YouTube
+        </a>
+      </div>`;
+    panel.appendChild(div);
+  } else {
+    // Try embed for non-blocked videos
+    const ytDiv = document.createElement('div');
+    ytDiv.innerHTML = `<iframe
+      src="https://www.youtube.com/embed/${s.ytId}?autoplay=1&start=${start}&end=${start+10}&controls=1&modestbranding=1&rel=0&playsinline=1"
+      width="100%" height="80" frameborder="0"
+      allow="autoplay; encrypted-media" allowfullscreen
+      style="border-radius:0 0 10px 10px;display:block">
+    </iframe>`;
+    panel.appendChild(ytDiv.firstElementChild);
+  }
   _startCountdown(songId);
 }
 
@@ -1880,6 +1886,7 @@ function shareCopy(title, artist) {
 // ═══════════════════════════════════════════════
 renderHome();
 renderEthnicPreview();
+_prefetchPreviews();
 
 </script>
 <!-- ═══════ EMAIL MODAL ═══════ -->
