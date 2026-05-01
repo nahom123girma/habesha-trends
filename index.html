@@ -1841,7 +1841,11 @@ function openEmailModal(isExit) {
 
 function closeEmailModal() {
   document.getElementById('emailModal').style.display = 'none';
-  try { localStorage.setItem('ht_shown', Date.now()); } catch(e) {}
+}
+
+function closeEmailModalSkip() {
+  document.getElementById('emailModal').style.display = 'none';
+  // Don't mark as subscribed — popup will show again next visit
 }
 
 function subscribeModal() {
@@ -1850,6 +1854,8 @@ function subscribeModal() {
     alert('Please enter a valid email address.');
     return false;
   }
+  // Mark as subscribed — popup will never show again
+  try { localStorage.setItem('ht_subscribed', '1'); } catch(e) {}
   closeEmailModal();
   return true;
 }
@@ -1870,19 +1876,20 @@ function rateSite(n) {
   }, 300);
 }
 
-// Show popup immediately on first visit
-try {
-  const lastShown = localStorage.getItem('ht_shown');
-  const oneDayAgo = Date.now() - 86400000;
-  if (!lastShown || parseInt(lastShown) < oneDayAgo) {
-    // Show immediately on page load
-    openEmailModal(false);
-  }
-} catch(e) { openEmailModal(false); }
+// Show popup 1 second after page load
+// Only skip if user has already subscribed
+setTimeout(function() {
+  try {
+    if (!localStorage.getItem('ht_subscribed')) {
+      openEmailModal(false);
+    }
+  } catch(e) { openEmailModal(false); }
+}, 1000);
 
 // Exit intent — desktop: mouse leaves top of page
 document.addEventListener('mouseleave', function(e) {
   if (e.clientY <= 5) {
+    try { if (localStorage.getItem('ht_subscribed')) return; } catch(e2) {}
     const modal = document.getElementById('emailModal');
     if (modal && modal.style.display === 'none') {
       openEmailModal(true);
@@ -1892,19 +1899,6 @@ document.addEventListener('mouseleave', function(e) {
 
 
 
-// ── STEP 3 & 4: Minimal 10-line test ──────────────
-// Call testPlay() from browser console to isolate the issue
-function testPlay() {
-  const a = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
-  a.volume = 1;
-  a.play()
-    .then(() => console.log('[HT] ✓ Hardcoded MP3 plays fine'))
-    .catch(e => console.error('[HT] ✗ Even hardcoded MP3 blocked:', e.name, e.message));
-}
-// Auto-test on page load to confirm file loads
-fetch('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', {method:'HEAD'})
-  .then(r => console.log('[HT] Network check: MP3 reachable, status', r.status))
-  .catch(e => console.error('[HT] Network check: MP3 unreachable', e.message));
 
 // ── BORDER TICKER ────────────────────────────────
 function initTicker() {
@@ -1954,14 +1948,13 @@ function shareCopy(title, artist) {
 
 // ═══════════════════════════════════════════════
 renderHome();
-renderEthnicPreview();
 _prefetchPreviews();
 
 </script>
 <!-- ═══════ EMAIL / EXIT MODAL ═══════ -->
 <div id="emailModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.82);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:20px">
   <div style="background:#1a1609;border:0.5px solid rgba(251,191,36,.3);border-radius:18px;padding:32px 28px;max-width:400px;width:100%;position:relative;text-align:center">
-    <button onclick="closeEmailModal()" style="position:absolute;top:12px;right:12px;background:rgba(255,255,255,.06);border:none;color:#666;width:28px;height:28px;border-radius:50%;font-size:15px;cursor:pointer;line-height:1">✕</button>
+    <button onclick="closeEmailModalSkip()" style="position:absolute;top:12px;right:12px;background:rgba(255,255,255,.06);border:none;color:#666;width:28px;height:28px;border-radius:50%;font-size:15px;cursor:pointer;line-height:1">✕</button>
 
     <!-- icon -->
     <div style="width:56px;height:56px;border-radius:14px;background:rgba(251,191,36,.12);border:0.5px solid rgba(251,191,36,.25);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 14px">🎵</div>
@@ -1993,7 +1986,7 @@ _prefetchPreviews();
       Subscribe — It's Free →
     </a>
 
-    <button onclick="closeEmailModal()" style="background:none;border:none;color:#444;font-size:11px;cursor:pointer;text-decoration:underline">No thanks, skip</button>
+    <button onclick="closeEmailModalSkip()" style="background:none;border:none;color:#444;font-size:11px;cursor:pointer;text-decoration:underline">No thanks, skip</button>
   </div>
 </div>
 
