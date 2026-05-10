@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "generatedAt": "2026-05-10T21:27:54.232Z",
+    "videoCount": 2,
+    "missing": []
+  },
+  "songs": [
+    {
+      "ytId": "ADc9JPeLYi4",
+      "title": "TEDDY AFRO  - ዳስ ጣል (አንሳው)  - Das Tal (Ansaw) | Track 1 (Official Lyrics Video)",
+      "artist": "Teddy Afro",
+      "views": 24726216,
+      "likes": 323397,
+      "comments": 67841,
+      "publishedAt": "2026-04-16T12:34:06Z",
+      "thumbUrl": "https://i.ytimg.com/vi/ADc9JPeLYi4/maxresdefault.jpg",
+      "youtubeUrl": "https://www.youtube.com/watch?v=ADc9JPeLYi4",
+      "weekViews": 24726216,
+      "growthRate": 1,
+      "rank": 1,
+      "prev": null,
+      "isNew": true,
+      "isTrending": true,
+      "country": "",
+      "lang": "",
+      "genre": "",
+      "reason": "",
+      "spotifyId": null,
+      "year": 2026
+    },
+    {
+      "ytId": "P9KzCEdCuV4",
+      "title": "Gelana Garomsa ft Yosan Getahun - Galmee Seenaa - new Ethiopian (music 2026 )",
+      "artist": "GELANA GAROMSA",
+      "views": 2891930,
+      "likes": 82375,
+      "comments": 54581,
+      "publishedAt": "2026-04-17T22:05:42Z",
+      "thumbUrl": "https://i.ytimg.com/vi/P9KzCEdCuV4/maxresdefault.jpg",
+      "youtubeUrl": "https://www.youtube.com/watch?v=P9KzCEdCuV4",
+      "weekViews": 2891930,
+      "growthRate": 1,
+      "rank": 2,
+      "prev": null,
+      "isNew": true,
+      "isTrending": true,
+      "country": "",
+      "lang": "",
+      "genre": "",
+      "reason": "",
+      "spotifyId": null,
+      "year": 2026
+    }
+  ]
+}
