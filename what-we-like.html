@@ -269,6 +269,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 </head>
 <body>
 
+<!-- top back link: quiet return to the rest of the site -->
+<nav class="topnav-back" aria-label="Site navigation">
+  <a class="back-link" href="/">&larr; Habesha Trends</a>
+</nav>
+
 <header class="masthead">
   <div class="dateline">
     <span class="vol">Vol. I &nbsp;·&nbsp; Issue 01</span>
@@ -489,7 +494,64 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   </div>
 </section>
 
+<!-- bottom: return to the rest of Habesha Trends -->
+<section class="bottom-back">
+  <a class="bottom-back-link" href="/">
+    <span class="bottom-back-arrow">&larr;</span>
+    Back to Habesha Trends
+  </a>
+</section>
+
 <style>
+/* === Back-to-home navigation === */
+/* small top link: quiet, above the masthead */
+.topnav-back{
+  max-width:1100px;margin:0 auto;
+  padding:18px 24px 0;
+}
+.back-link{
+  display:inline-block;
+  font-family:'JetBrains Mono';font-size:11px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);
+  text-decoration:none;
+  padding:6px 0;
+  border-bottom:1px solid transparent;
+  transition:color .2s,border-color .2s;
+}
+.back-link:hover{
+  color:var(--amber);
+  border-bottom-color:var(--amber);
+}
+
+/* bottom: large, visible after the submission section */
+.bottom-back{
+  max-width:1100px;margin:0 auto;
+  padding:36px 24px 8px;
+  text-align:center;
+}
+.bottom-back-link{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'Space Grotesk';font-weight:600;font-size:14px;
+  color:var(--muted);
+  text-decoration:none;
+  padding:13px 26px;
+  border:1px solid var(--border);
+  border-radius:30px;
+  transition:color .2s,border-color .2s,background .2s,gap .2s;
+}
+.bottom-back-link:hover{
+  color:var(--amber);
+  border-color:var(--amber);
+  background:rgba(245,166,35,0.04);
+  gap:14px; /* arrow slides slightly left on hover */
+}
+.bottom-back-arrow{
+  font-size:16px;line-height:1;
+  transition:transform .2s ease;
+}
+.bottom-back-link:hover .bottom-back-arrow{transform:translateX(-3px)}
+
 /* === Scroll cue: subtle ↓ that bobs gently, fades on scroll === */
 .scroll-cue{
   display:flex;justify-content:center;
